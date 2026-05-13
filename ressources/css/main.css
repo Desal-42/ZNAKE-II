@@ -11,3 +11,8 @@
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
 @import url("https://fonts.googleapis.com/css?family=VT323");
 @import url("https://fonts.googleapis.com/css?family=Space+Mono");
+
+body {
+    overscroll-behavior: none; /* bloque pull-to-refresh au niveau CSS */
+    touch-action: none;
+}
