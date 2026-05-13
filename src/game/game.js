@@ -159,6 +159,7 @@ export class Game {
     init() {
         this.#init_case_number()
         this.#init_board();
+        this.#init_touch();
         this.#init_matrice();
         this.#init_zam();
         this.#init_key();
@@ -215,6 +216,47 @@ export class Game {
             if      (e.key === ' ')      this.key_press_space();
             if      (e.key === 'Escape') this.key_press_esc();
         });
+    }
+    #init_touch() {
+        let touch_start_x = null;
+        let touch_start_y = null;
+        const SEUIL = 30; // px minimum pour valider un swipe
+
+        const board = document.getElementById("board");
+
+        board.addEventListener('touchstart', (e) => {
+            touch_start_x = e.touches[0].clientX;
+            touch_start_y = e.touches[0].clientY;
+        }, { passive: true });
+
+        board.addEventListener('touchend', (e) => {
+            if (touch_start_x === null) return;
+
+            const dx = e.changedTouches[0].clientX - touch_start_x;
+            const dy = e.changedTouches[0].clientY - touch_start_y;
+
+            const abs_dx = Math.abs(dx);
+            const abs_dy = Math.abs(dy);
+
+            // Tap sans mouvement → pause / reprise musique (équivalent Escape)
+            if (abs_dx < SEUIL && abs_dy < SEUIL) {
+                if (!this.#en_pause) this.key_press_esc();
+                touch_start_x = null;
+                touch_start_y = null;
+                return;
+            }
+
+            // Swipe : on prend l'axe dominant
+            if (abs_dx > abs_dy) {
+                if (dx > 0) this.key_press_right();
+                else        this.key_press_left();
+            } else {
+                if (dy > 0) this.key_press_down();
+                else        this.key_press_up();
+            }
+            touch_start_x = null;
+            touch_start_y = null;
+        }, { passive: true });
     }
     #init_button() {
         document.getElementById("replay").addEventListener("click", () => this.reset());
