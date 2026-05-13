@@ -1,0 +1,14 @@
+#swiper {
+    height: 100%; margin: 0 auto; display: flex;
+}
+.board {
+    width: 100%; height: 100%; border: 3px solid var(--highlight); background-color: var(--black75); box-shadow: 0 0 80px var(--black50);
+}
+.case {display: inline-block; float: left; border: dotted 0.01px var(--plateau-case); box-sizing: border-box; background-repeat: no-repeat; background-position: center center; background-size: auto 100%;}
+
+.invincible.board {border-color: var(--invincible-max) !important; transition: all 0.5s ease;}
+.invincible.board .case{border: dotted 0.01px var(--invincible-moyen); }
+.invincible.board .zombie_horde{background-color: var(--invincible-faible);}
+
+.lost.board {border: solid 5px var(--lost-max) !important;}
+.lost.board .case{border: dotted 0.01px var(--lost-min);}

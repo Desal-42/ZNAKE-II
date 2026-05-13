@@ -1,0 +1,28 @@
+.zam-ii {
+    --background        : url("../../media/plateau/zam_ii_background.png");
+    --footer-background : url("../../media/plateau/texture.png");
+    --zam               : url("../../../../media/zombies/zam.gif");
+
+    /**  -------------------- générale -------------------- **/
+    --highlight    :  #8f2100;
+    --border-color :  #201114;
+
+    /** -------------------- assets -------------------- **/
+    --groupe-fond : rgba(204, 0, 0, 0.35);
+    --zombie-fond : rgba(133, 151, 127, 0.25);
+
+    --plateau-case : rgba(204, 0, 0, 0.25);
+
+    --invincible-max    : rgba(198, 124, 60, 1);
+    --invincible-moyen  : rgba(198, 124, 60, 0.35);
+    --invincible-faible : rgba(198, 124, 60, 0.25);
+
+    --lost-max :  #8f2100 ;
+    --lost-min : rgba(143, 33, 0, 0.5);
+
+    /** -------------------- menus -------------------- **/
+    --bonus-color:  #475059;
+    --bonus-actif-color:  #4a0a00 ;
+    --fond-menu-transparent : rgba(99, 15, 0, 0.95);
+
+}

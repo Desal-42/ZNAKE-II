@@ -1,0 +1,12 @@
+@import url("curseur.css");
+.blink{
+    animation-duration: 0.4s;
+    animation-name: blink;
+    animation-iteration-count:infinite;
+}
+
+@keyframes blink {
+    0% {opacity: 1;}
+    50% {opacity: 0.75;}
+    100% {opacity: 1;}
+}

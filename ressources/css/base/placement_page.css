@@ -1,0 +1,11 @@
+*{ box-sizing: border-box; }
+body {text-rendering : auto; font-family: 'Press Start 2P', cursive; font-size: 13px; letter-spacing: 0; line-height: 26px;}
+.global{z-index:0; overflow: hidden; background:var(--background) no-repeat center center var(--black); background-size: cover; display: flex; align-items:center; padding: 75px 0 90px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; }
+
+.wrapper{margin:0 auto; width: 100%; max-width: 1140px; padding: 0 10px;}
+.spacer{clear: both;}
+.bloc33{width: 33.333%; float: left; padding: 0 15px;}
+.bloc50{width: 50%; float: left;}
+
+.hide{display: none !important;}
+

@@ -1,0 +1,39 @@
+/*-----DESCRIPTION BONUS ZONE-----*/
+
+/*#bonus_description {position: relative; bottom: 0; width: 100%; background-color: rgba(128,183,54,0.50); color: #FFF; text-align: center; padding: 15px 0; font-size: 13px;}
+.hide_bonus_description {visibility: hidden;}*/
+
+#bonus_description {position: relative; width: 80%; margin: 0 auto; float: left; text-align: left;}
+.hide_bonus_description {visibility: hidden;}
+
+#bonus_description p{display:inline-block; text-align: left; background-repeat: no-repeat; background-position: center left; background-size: auto 100%; padding-left: 56px; line-height: 22px; font-family: 'VT323', monospace; letter-spacing: 0.7px; word-spacing: -2.5px; font-size: 19px; text-transform: uppercase;}
+#bonus_description p span,
+#bonus_description p em{color: var(--wihte); font-size: 18px; text-align: left;}
+#bonus_description p em{display: block;}
+#bonus_description p em .disparition{color: var(--bonus-color);}
+#bonus_description p em .effet{color: var(--bonus-actif-color);}
+
+
+
+/*-----BONUS DESCRIPTION-----*/
+
+.time_left {width: 100%; height: 2px; background-color: transparent; position: absolute; top:-2px; left: 0; z-index:50;}
+
+.bomb_time_left {transition: width 10s linear; background-color: var(--bonus-color) !important; width: 0 !important;}
+
+.star_time_left {transition: width 10s linear; background-color: var(--bonus-color) !important; width:0 !important;}
+.star_time_left_actif {transition: width 10s linear; background-color: var(--bonus-actif-color) !important; width:0 !important;}
+
+.mago_time_left {transition: width 37s linear; width: 0; background-color: var(--bonus-color) !important;}
+
+.jekyll_time_left {transition: width 10s linear; width:0 !important; background-color: var(--bonus-color) !important;}
+.jekyll_time_left_actif {transition: width 10s linear;background-color: var(--bonus-actif-color) !important; width:0 !important;}
+
+.vito_time_left {transition: width 10s linear; width:0 !important; background-color: var(--bonus-color) !important;}
+.vito_time_left_actif {transition: width 10s linear;background-color: var(--bonus-actif-color) !important; width:0 !important;}
+
+.aspic_time_left {transition: width 10s linear; width:0 !important; background-color: var(--bonus-color) !important;}
+.aspic_time_left_actif {transition: width 60s linear;background-color: var(--bonus-actif-color) !important; width:0 !important;}
+
+.nobru_time_left {transition: width 10s linear; width:0 !important; background-color: var(--bonus-color) !important;}
+.nobru_time_left_actif {transition: width 10s linear;background-color: var(--bonus-actif-color) !important; width:0 !important;}

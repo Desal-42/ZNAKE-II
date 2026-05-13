@@ -1,0 +1,13 @@
+@import url("assets/assets.css");
+@import url("base/base.css");
+@import url("credits/credits.css");
+@import url("effects/effects.css");
+@import url("menu/menus.css");
+/*@import url("music/");*/
+@import url("themes/themes.css");
+@import url("responsive/responsive.css");
+
+
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+@import url("https://fonts.googleapis.com/css?family=VT323");
+@import url("https://fonts.googleapis.com/css?family=Space+Mono");

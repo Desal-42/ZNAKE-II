@@ -1,0 +1,12 @@
+#informations{position: absolute; bottom: 63px; left: -350px; z-index: 8000; transition: all 0.3s ease; cursor: pointer;}
+#informations:hover{left: 0;}
+#informations:hover .infos-titre{opacity: 1;}
+
+.infos-titre{color: var(--wihte); opacity: 0.5; font-family: 'Press Start 2P', cursive; font-size: 10px; position: absolute; bottom: 0; left: 355px; width: 140px; text-align: center; height: 26px; margin-top: -13px; text-transform: uppercase; letter-spacing: 1px;}
+
+.infos-content{background:var(--footer-background) repeat left bottom var(--black); position: relative; width: 350px; padding:10px; border-top: 2px solid var(--border-color); border-right: 2px solid var(--border-color); color: var(--wihte); font-family: 'Space Mono', monospace; text-align: left; font-size: 11px; line-height: 16px;}
+.infos-content img{display: block; margin: 5px auto 0; width: 160px;}
+.infos-content p{margin-bottom: 5px;}
+.infos-content h5{color: var(--highlight); font-family: 'Press Start 2P', cursive; font-size: 11px; margin: 0 0 5px;}
+.infos-content a{color: var(--highlight);}
+.infos-content .credits{margin-bottom: 10px;}

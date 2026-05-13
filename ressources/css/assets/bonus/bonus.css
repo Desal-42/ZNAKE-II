@@ -1,0 +1,13 @@
+.cerveau, .brain {background-image:url("../../../media/token/cerveau.gif");}
+
+.bombe, .bomb, .infobomb {background-image: url('../../../media/token/bonus/bombe.gif');}
+
+.etoile, .star, .infostar {background-image: url('../../../media/token/bonus/star.png');}
+
+.pizz, .pizza, .infopizza{background-image:url("../../../media/token/bonus/pizza.png");}
+
+.tntboum, .tnt{background-image:url("../../../media/token/bonus/tnt.png");}
+
+.life, .vie{background-image:url("../../../media/token/bonus/vie.gif");}
+
+.retro {background-image:url("../../../media/token/bonus/retro.gif");}

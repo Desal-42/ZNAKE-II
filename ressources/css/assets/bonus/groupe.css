@@ -1,0 +1,11 @@
+#bonus_description p.infomago, .lemago, .mago{background-image: url('../../../media/token/bonus/group/mago.png');}
+
+#bonus_description p.infojekyll, .lejekyll, .jekyll  {background-image: url('../../../media/token/bonus/group/jekyll.png');}
+
+#bonus_description p.infovito, .levito, .vito {background-image: url('../../../media/token/bonus/group/vito.png');}
+
+#bonus_description p.infoaspic, .leaspic, .aspic {background-image: url('../../../media/token/bonus/group/aspic.png');}
+
+#bonus_description p.infonobru, .lenobru, .nobru {background-image: url('../../../media/token/bonus/group/nobru.png');}
+
+.lemago, .mago, .lejekyll, .jekyll, .levito, .vito, .leaspic, .aspic, .lenobru, .nobru { background-color: var(--groupe-fond); }

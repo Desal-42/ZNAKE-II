@@ -1,0 +1,27 @@
+.zombie_0, .zombie_1, .zombie_2, .zombie_3, .zombie_4, .zombie_5,
+.zombie_6, .zombie_7, .zombie_8, .zombie_9, .zombie_10, .zombie_11
+{background-color: rgba(128, 183, 54, 0.25);}
+
+.zombie_0  {background-image:url("../../../../media/zombies/f1.png");}
+
+.zombie_1  {background-image:url("../../../../media/zombies/h1.png");}
+
+.zombie_2  {background-image:url("../../../../media/zombies/f2.png");}
+
+.zombie_3  {background-image:url("../../../../media/zombies/h2.png");}
+
+.zombie_4  {background-image:url("../../../../media/zombies/f3.png");}
+
+.zombie_5  {background-image:url("../../../../media/zombies/h3.png");}
+
+.zombie_6  {background-image:url("../../../../media/zombies/h4.png");}
+
+.zombie_7  {background-image:url("../../../../media/zombies/f4.png");}
+
+.zombie_8  {background-image:url("../../../../media/zombies/f5.png");}
+
+.zombie_9  {background-image:url("../../../../media/zombies/h5.png");}
+
+.zombie_10 {background-image:url("../../../../media/zombies/f6.png");}
+
+.zombie_11 {background-image:url("../../../../media/zombies/h6.png");}

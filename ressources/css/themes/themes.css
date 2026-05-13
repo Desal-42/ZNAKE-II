@@ -1,0 +1,13 @@
+@import url("retro-zam.css");
+@import url("zam-ii.css");
+
+:root {
+    --black     : #000;
+    --black80   : rgba(0,0,0,0.80);
+    --black75   : rgba(0,0,0,0.75);
+    --black60   : rgba(0,0,0,0.60);
+    --black50   : rgba(0,0,0,0.50);
+    --dark-gray : #111;
+    --gray      : #AAA;
+    --wihte     : #FFF;
+}

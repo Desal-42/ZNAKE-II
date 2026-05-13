@@ -1,0 +1,28 @@
+.retro-zam {
+    --background        : url("../../media/plateau/retro_background.png");
+    --footer-background : url("../../media/plateau/texture.png");
+    --zam               : url("../../../../media/zombies/retro_zam.gif");
+
+    /**  -------------------- générale -------------------- **/
+    --highlight    : #80b736;
+    --border-color : #2E4113FF;
+
+    /** -------------------- assets -------------------- **/
+    --groupe-fond : rgba(204, 0, 0, 0.35);
+    --zombie-fond : rgba(128, 183, 54, 0.25);
+
+    --plateau-case : rgba(128, 183, 54, 0.35);
+
+    --invincible-max    : rgb(246,211,20);;
+    --invincible-moyen  : rgba(246,211,20, 0.35);;
+    --invincible-faible : rgba(246,211,20, 0.25);;
+
+    --lost-max : rgb(204, 0, 0);
+    --lost-min : rgba(204, 0, 0, 0.5);
+
+    /** -------------------- menus -------------------- **/
+    --bonus-color: #00a8cc;
+    --bonus-actif-color: #CC0000;
+    --fond-menu-transparent : rgba(128,183,54,0.95);
+
+}

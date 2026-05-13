@@ -1,0 +1,6 @@
+.manual {position: absolute; top: 0; margin-top: 50vh; transform: translateY(-50%); width: 100%; background-color: var(--fond-menu-transparent); color: var(--wihte); text-align: center; padding: 20px 0; font-size: 14px;}
+.manual h5{margin-bottom: 15px; font-size: 20px; color: var(--black); text-transform: uppercase; letter-spacing: 5px; padding-bottom: 15px; border-bottom: 2px solid var(--black);}
+.manual span{color: var(--black);}
+.manual ul li{margin-bottom: 10px;}
+.manual ul li:last-child{margin-bottom: 0;}
+.hide_manual {display:none;}
