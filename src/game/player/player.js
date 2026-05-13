@@ -38,6 +38,9 @@ export class Player {
         this.#ajouter_chaine(classe);
         this.#liste_membre.push(classe);
     }
+    ajouter_retro(){
+        this.#ajouter_chaine("retro");
+    }
 
     retirer_trois_zombie() {
         let membre = []

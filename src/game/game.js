@@ -427,7 +427,7 @@ export class Game {
     clear_z() {
         for (let x = 0; x < Game.nb_case; x++) {
             for (let y = 0; y < Game.nb_case; y++) {
-                if (this.#matrice[x][y] !== 0 && this.#matrice[x][y].substring(0,4) === "zomb") {
+                if (this.#matrice[x][y] !== 0 && (this.#matrice[x][y].substring(0,4) === "zomb" || (this.#matrice[x][y].substring(0,4) === "retr" && this.#retro_est_apparut === true) || this.#player.get_liste_membre().includes(this.#matrice[x][y])) ) {
                     this.#matrice[x][y] = 0;
                 }
             }
@@ -717,6 +717,7 @@ export class Game {
         this.theme_retro_zam();
         this.#retro_est_apparut = true;
         this.#player.add_score(50);
+        this.#player.ajouter_retro()
         this.retro_remove();
     }
     placement_retro(){
@@ -752,6 +753,26 @@ export class Game {
             }
         }
     }
+    // gestion mago
+    prendre_mago(){}
+    placement_mago(){}
+    mago_remove(){}
+    // gestion vito
+    prendre_vito(){}
+    placement_vito(){}
+    vito_remove(){}
+    // gestion nobru
+    prendre_nobru(){}
+    placement_nobru(){}
+    nobru_remove(){}
+    // gestion aspic
+    prendre_aspic(){}
+    placement_aspic(){}
+    aspic_remove(){}
+    // gestion jekyll
+    prendre_jekyll(){}
+    placement_jekyll(){}
+    jekyll_remove(){}
 
     /** --- [ gestion pizza & cerveau ] --- **/
     placement_cerveau() {
