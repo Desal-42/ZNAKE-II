@@ -16,6 +16,8 @@ export class Game {
     #is_music;
     static #music_manager = new Music_manager();
     static #sound_manager = new Sound_manager();
+    static #sound_manager_deplacement = new Sound_manager();
+
 
     static #vitesse = 170; //170
     static nb_case;
@@ -63,32 +65,33 @@ export class Game {
     /** -- **[ variable groupe ]** -- **/
     #allow_groupe;
     #id_apparition_groupe_timeout;
+    static #temps_avant_apparition_groupe        = 300 * 1000
     // mago
     static #temps_avant_disparition_mago         = 10 * 1000;
-    static #temps_avant_apparition_mago          = 10 * 1000;
+    static #temps_avant_apparition_mago          = 400 * 1000;
     #id_apparition_mago_timeout;
     #allow_mago;
     // vito
     static #temps_avant_disparition_vito         = 10 * 1000;
-    static #temps_avant_apparition_vito          = 10 * 1000;
+    static #temps_avant_apparition_vito          = 400 * 1000;
     static #temps_effect_vito                    = 10 * 1000;
     #id_apparition_vito_timeout;
     #allow_vito;
     // nobru
     static #temps_avant_disparition_nobru        = 10 * 1000;
-    static #temps_avant_apparition_nobru         = 10 * 1000;
+    static #temps_avant_apparition_nobru         = 400 * 1000;
     static #temps_effect_nobru                   = 10 * 1000;
     #id_apparition_nobru_timeout;
     #allow_nobru;
     // jekyll
     static #temps_avant_disparition_jekyll       = 10 * 1000;
-    static #temps_avant_apparition_jekyll        = 10 * 1000;
+    static #temps_avant_apparition_jekyll        = 400 * 1000;
     static #temps_effect_jekyll                  = 10 * 1000;
     #id_apparition_jekyll_timeout
     #allow_jekyll;
     // aspic
     static #temps_avant_disparition_aspic        = 10 * 1000;
-    static #temps_avant_apparition_aspic         = 10 * 1000;
+    static #temps_avant_apparition_aspic         = 400 * 1000;
     static #temps_effect_aspic                   = 60 * 1000;
     #id_apparition_aspic_timeout
     #allow_aspic;
@@ -115,7 +118,6 @@ export class Game {
         this.reset_bonus();
         this.clear_timeout()
     }
-
     reset_bonus(){
         this.clear_bonus()
         this.#bonus_vitesse = 1;
@@ -138,7 +140,6 @@ export class Game {
 
         this.#est_pizza = false;
     }
-
     clear_timeout(){
         clearTimeout(this.#id_apparition_bombe_timeout)
         clearTimeout(this.#id_apparition_tnt_timeout)
@@ -218,6 +219,8 @@ export class Game {
             else if (e.key === 'd' || e.key === 'ArrowRight') this.key_press_right();
             if      (e.key === ' ')      this.key_press_space();
             if      (e.key === 'Escape') this.key_press_esc();
+            if      (e.key === 'Enter') this.key_press_enter();
+
         });
     }
     #init_touch() {
@@ -283,10 +286,18 @@ export class Game {
 
     //                    [ GESTION DES INPUTS ]                    \\
     key_press_up() {
-        if (!this.#game_over) {Game.#sound_manager.play('mouvement');}
-        if ((this.#player.get_horde().get_mouv() !== 's' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'z') {
-            this.#last_mouv = 'z';
-            if (this.#en_pause) { this.start() }
+        if (this.#en_pause) {
+            this.start();
+            if (this.#last_mouv == null) {
+                if (this.#player.get_horde().get_mouv() != null) this.#last_mouv = this.#player.get_horde().get_mouv()
+                else this.#last_mouv = 'z';
+            }
+        }
+        else {
+            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if ((this.#player.get_horde().get_mouv() !== 's' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'z') {
+                this.#last_mouv = 'z';
+            }
         }
     }
     #up(){
@@ -302,12 +313,19 @@ export class Game {
         this.update_x(x, y, nx)
     }
     key_press_left(){
-        if (!this.#game_over) {Game.#sound_manager.play('mouvement');}
-        if ((this.#player.get_horde().get_mouv() !== 'd' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'q') {
-            this.#last_mouv = 'q';
-            if (this.#en_pause) { this.start(); }
+        if (this.#en_pause) {
+            this.start();
+            if (this.#last_mouv == null) {
+                if (this.#player.get_horde().get_mouv() != null) this.#last_mouv = this.#player.get_horde().get_mouv()
+                else this.#last_mouv = 'q';
+            }
         }
-
+        else {
+            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if ((this.#player.get_horde().get_mouv() !== 'd' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'q') {
+                this.#last_mouv = 'q';
+            }
+        }
     }
     #left(){
         this.#player.get_horde().set_mouv('q');
@@ -322,10 +340,18 @@ export class Game {
         this.update_y(x, y, ny)
     }
     key_press_down(){
-        if (!this.#game_over) {Game.#sound_manager.play('mouvement');}
-        if ((this.#player.get_horde().get_mouv() !== 'z' || this.#player.get_nb_zombies() < 1 )  && this.#last_mouv !== 's') {
-            this.#last_mouv = 's';
-            if (this.#en_pause) { this.start(); }
+        if (this.#en_pause) {
+            this.start();
+            if (this.#last_mouv == null) {
+                if (this.#player.get_horde().get_mouv() != null) this.#last_mouv = this.#player.get_horde().get_mouv()
+                else this.#last_mouv = 's';
+            }
+        }
+        else {
+            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if ((this.#player.get_horde().get_mouv() !== 'z' || this.#player.get_nb_zombies() < 1 )  && this.#last_mouv !== 's') {
+                this.#last_mouv = 's';
+            }
         }
     }
     #down(){
@@ -342,10 +368,18 @@ export class Game {
         this.update_x(x, y, nx)
     }
     key_press_right(){
-        if (!this.#game_over) {Game.#sound_manager.play('mouvement');}
-        if ((this.#player.get_horde().get_mouv() !== 'q' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'd' ) {
-            this.#last_mouv = 'd';
-            if (this.#en_pause) { this.start(); }
+        if (this.#en_pause) {
+            this.start();
+            if (this.#last_mouv == null) {
+                if (this.#player.get_horde().get_mouv() != null) this.#last_mouv = this.#player.get_horde().get_mouv()
+                else this.#last_mouv = 'd';
+            }
+        }
+        else {
+            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if ((this.#player.get_horde().get_mouv() !== 'q' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'd' ) {
+                this.#last_mouv = 'd';
+            }
         }
     }
     #right(){
@@ -385,6 +419,7 @@ export class Game {
 
     key_press_space() { this.switch_etat_musique(); }
     key_press_esc() { if (!this.#en_pause) this.#menue_pause = true; this.pause();}
+    key_press_enter() { if (!document.getElementById("game_over").classList.contains("hide_go_popin") && document.getElementById("save").classList.contains("hide")) {this.reset()}}
 
 
     //                    [ FONCTION UTILITAIRE ]                    \\
@@ -557,40 +592,46 @@ export class Game {
             case 'vie'  : this.prendre_coeur();  break;
             case 'retro'  : this.prendre_retro();  break;
 
-            //case 'mago'   : this.prendre_mago();   break;
-            //case 'aspic'  : this.prendre_aspic();  break;
-            //case 'vito'   : this.prendre_vito();   break;
-            //case 'nobru'  : this.prendre_nobru();  break;
-            //case 'jekyll' : this.prendre_jekyll(); break;
+            case 'mago'   : this.prendre_mago();   break;
+            case 'aspic'  : this.prendre_aspic();  break;
+            case 'vito'   : this.prendre_vito();   break;
+            case 'nobru'  : this.prendre_nobru();  break;
+            case 'jekyll' : this.prendre_jekyll(); break;
         }
     }
     placement_bonus() {
         let bonus_val = Math.floor(Math.random() * 100);
-        if (bonus_val >= 50 && bonus_val < 65 && this.#player.get_horde().get_size() > 10 && this.#allow_bombe) { // 15%
-            this.placement_bombe()
+        if (bonus_val >= 50 && bonus_val < 65 && this.#player.get_horde().get_size() > 10 && this.#allow_bombe) {
+            this.placement_bombe(); // probabilité qu'une bombe spawn 15%
         }
-        else if (bonus_val >= 65 && bonus_val < 75 && this.#player.get_horde().get_size() > 10 && this.#allow_etoile) { // 10 %
-            this.placement_etoile(); console.log("etoile")
+        else if (bonus_val >= 65 && bonus_val < 75 && this.#player.get_horde().get_size() > 10 && this.#allow_etoile) {
+            this.placement_etoile(); // probabilité qu'une étoile spawn 10%
         }
-        else if (bonus_val >= 75 && bonus_val < 80 && this.#player.get_horde().get_size() > 15 && this.#allow_coeur) { // 5%
-            this.placement_coeur()
+        else if (bonus_val >= 75 && bonus_val < 80 && this.#player.get_horde().get_size() > 15 && this.#allow_coeur) {
+            this.placement_coeur(); // probabilité qu'un coeur spawn 5%
         }
-        else if (bonus_val >= 80 && bonus_val < 85 && this.#player.get_horde().get_size() > 15 && this.#allow_retro) { // 5%
-            this.placement_retro()
+        else if (bonus_val >= 80 && bonus_val < 85 && this.#player.get_horde().get_size() > 15 && this.#allow_retro) {
+            this.placement_retro(); // probabilité que retro spawn 5%
         }
-        else if (bonus_val >= 85 && bonus_val < 90 && this.#player.get_horde().get_size() > 20 && this.#allow_tnt) { // 5%
-            this.placement_tnt()
+        else if (bonus_val >= 85 && bonus_val < 90 && this.#player.get_horde().get_size() > 20 && this.#allow_tnt) {
+            this.placement_tnt(); // probabilité qu'une étoile spawn 5%
         }
-        else if (bonus_val >= 90 && this.#player.get_score() > 149 && this.#allow_groupe) { // 10% / 2 : 5%
-            console.log("Spawn groupe");
+        else if (bonus_val >= 90 && this.#player.get_score() > 149 && this.#allow_groupe) {
+            // probabilité que le groupe sois choisi 10%
+            this.#allow_groupe = false
             let groupe = Math.floor(Math.random() * 26);
-            if (groupe === 13) {
-            } else if (groupe >= 14 && groupe < 17) {
-            } else if (groupe >= 17 && groupe < 20) {
-            } else if (groupe >= 20 && groupe < 23) {
-            } else if (groupe >= 23 && groupe < 26) {
+            if (groupe === 13 && this.#player.get_horde().get_size() > 25 && this.#allow_jekyll) {
+                this.placement_jekyll(); // probabilité que jekyll spawn 0.4%
+            } else if (groupe >= 14 && groupe < 17 && this.#allow_mago) {
+                this.placement_mago();   // probabilité que mago spawn  1.15%
+            } else if (groupe >= 17 && this.#player.get_horde().get_size() > 20 && groupe < 20 && this.#allow_nobru) {
+                this.placement_nobru();  // probabilité que nobru spawn 1.15%
+            } else if (groupe >= 20 && this.#player.get_horde().get_size() > 20 && groupe < 23 && this.#allow_aspic) {
+                this.placement_aspic();  // probabilité que aspic spawn 1.15%
+            } else if (groupe >= 23 && this.#player.get_horde().get_size() > 15 && groupe < 26 && this.#allow_vito) {
+                this.placement_vito();   // probabilité que vito spawn  1.15%
             }
-
+            this.#id_apparition_groupe_timeout = setTimeout(() => {this.#allow_groupe = true}, Game.#temps_avant_apparition_groupe);
         }
     }
 
@@ -754,25 +795,69 @@ export class Game {
         }
     }
     // gestion mago
-    prendre_mago(){}
-    placement_mago(){}
-    mago_remove(){}
+    prendre_mago(){
+        this.#player.ajouter_un_membre('mago');
+    }
+    placement_mago(){
+        console.log("placement mago")
+    }
+    mago_remove(){
+
+    }
     // gestion vito
-    prendre_vito(){}
-    placement_vito(){}
-    vito_remove(){}
+    prendre_vito(){
+        this.#player.ajouter_un_membre('vito');
+    }
+    placement_vito(){
+        console.log("placement vito")
+    }
+    vito_remove(){
+    }
     // gestion nobru
-    prendre_nobru(){}
-    placement_nobru(){}
-    nobru_remove(){}
+    prendre_nobru(){
+        this.#player.ajouter_un_membre('nobru');
+    }
+    placement_nobru(){console.log("placement nobru")}
+    nobru_remove(){
+
+    }
     // gestion aspic
-    prendre_aspic(){}
-    placement_aspic(){}
-    aspic_remove(){}
+    prendre_aspic(){
+        clearTimeout(this.#bonus_id);
+        this.#bonus_actif = true;
+        this.#bonus_position = null;
+        this.#bonus_name = "";
+        this.#bonus_id = null;
+        this.#colision = false;
+        this.#player.add_score(80);
+        this.#player.ajouter_un_membre('aspic');
+        this.#est_pizza = true;
+        this.#id_pizza_timeout = setTimeout(() => {this.#est_pizza = false; this.aspic_remove()}, Game.#temps_effect_aspic)
+    }
+    placement_aspic(){
+        if (!this.#bonus_actif) {
+            this.#bonus_id = setTimeout(()=> { this.aspic_remove(); }, Game.#temps_avant_disparition_aspic);
+            this.#bonus_actif = true;
+            this.#bonus_position = this.#placement_item();
+            this.#bonus_name = "aspic"
+            this.#matrice[this.#bonus_position[0]][this.#bonus_position[1]] = "aspic";
+        }
+    }
+    aspic_remove(){
+        this.#id_apparition_aspic_timeout = setTimeout(() => {this.#allow_aspic = true}, Game.#temps_avant_apparition_aspic);
+        this.#allow_aspic = false;
+        this.clear_bonus();
+    }
     // gestion jekyll
-    prendre_jekyll(){}
-    placement_jekyll(){}
-    jekyll_remove(){}
+    prendre_jekyll(){
+        this.#player.ajouter_un_membre('jekyll');
+    }
+    placement_jekyll(){
+        console.log("placement jekyll")
+    }
+    jekyll_remove(){
+
+    }
 
     /** --- [ gestion pizza & cerveau ] --- **/
     placement_cerveau() {
