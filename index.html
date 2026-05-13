@@ -140,10 +140,53 @@
                 <li class="blink">Choisissez une direction pour commencer !</li>
             </ul>
         </div>
+        <div class="pause hide_manual">
+            <h5>PAUZE</h5>
+            <div class="score-pause">
+                <p>Score : <span class="score">0</span> - <span class="nbhorde">0</span> zombies dans la horde</p>
+            </div>
+
+            <p class="blink">Choisissez une direction pour relancer la partie !</p>
+
+            <div class="wrapper">
+
+                <div class="bloc50">
+                    <ul class="item-list">
+                        <li class="cerveau"><span>Cerveau</span> Bouffe zombiesque - 10pts</li>
+                        <li class="zombietest"><span>Zombie</span> 1 cerveau = 1 zombie dans la horde</li>
+                        <li class="etoile"><span>Étoile</span> Invincibilité - 2pts</li>
+                        <li class="bombe"><span>Bombe</span> Décharge la horde de 3 zombies - 5pts</li>
+                        <li class="tntboum"><span>TNT</span> Décharge la horde de tous les zombies - 50pts</li>
+                        <li class="life"><span>Vie</span> Résiste à un choc sans mourir - 20pts</li>
+                    </ul>
+                </div>
+
+                <div class="bloc50">
+                    <ul class="item-list">
+                        <li class="lemago"><span>Le Mago</span> Tente d'attraper le fou - 150pts</li>
+                        <li class="levito"><span>Vito</span> La Horde accélère - 100pts</li>
+                        <li class="lenobru"><span>Nobru</span> Clique sur la horde pour tuer les zombies - 100pts</li>
+                        <li class="lejekyll"><span>Jekyll</span> La horde se coupe/change de sens - 200pts</li>
+                        <li class="leaspic"><span>Aspic</span> Fait apparaitre des pizzas - 80pts</li>
+                        <li class="pizz"><span>Pizza</span> Miam ! Ne charge pas votre horde - 15pts</li>
+                    </ul>
+                </div>
+                <div class="spacer"></div>
+
+                <ul class="notice-pause">
+                    <li>Chaque membres du groupe présents dans votre horde vous rapportera <span>5 points supplémentaires</span> par cerveaux attrapés</li>
+                </ul>
+
+            </div>
+        </div>
 
     </main>
     <footer>
-
+        <div class="time_left"></div>
+        <div id="bonus_description" class="descmobile hide">
+            <div class="description"></div>
+        </div>
+        <div id="menupause"></div>
     </footer>
     <div class="soundplayer">
     </div>

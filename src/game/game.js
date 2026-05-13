@@ -10,7 +10,7 @@ export class Game {
     #position_cerveau;
 
     /** --- **[ variable menu ]** --- **/
-    #en_pause; #game_over;
+    #en_pause; #game_over; #menue_pause;
 
     /** --- **[ variable audio ]** --- **/
     #is_music;
@@ -24,7 +24,7 @@ export class Game {
     #bonus_actif; #bonus_position;
     #bonus_name; #bonus_id;
     #bonus_vitesse; #id_reset_bonus;
-    static #temps_avant_nouveau_bonus            = 10 * 1000;
+    static #temps_avant_nouveau_bonus            = 8 * 1000;
 
     /** --- **[ variable bonus ]** --- **/
 
@@ -43,6 +43,7 @@ export class Game {
     static #temps_avant_apparition_coeur         = 10 * 1000;
     #id_apparition_coeur_timeout;
     #coeur_est_apparut;
+    #id_vie_timeout;
     #allow_coeur;
     // étoile
     static #temps_avant_disparition_etoile       = 10 * 1000;
@@ -108,6 +109,7 @@ export class Game {
         this.#intervalId = null;
         this.#colision   = true;
         this.#game_over  = false;
+        this.#menue_pause = false;
 
         this.theme_zam_ii();
         this.reset_bonus();
@@ -153,6 +155,7 @@ export class Game {
         clearTimeout(this.#id_reset_bonus)
         clearTimeout(this.#id_pizza_timeout)
         clearTimeout(this.#id_etoile_timeout)
+        clearTimeout(this.#id_vie_timeout)
     }
 
     //                      [ INITIALISATION ]                      \\
@@ -255,11 +258,11 @@ export class Game {
             touch_start_time = null;
 
             // Tap court → pause/reprise
-            if (abs_dx < SEUIL && abs_dy < SEUIL && duree < TAP_DUREE) {
+            /**if (abs_dx < SEUIL && abs_dy < SEUIL && duree < TAP_DUREE) {
                 if (!this.#en_pause) this.key_press_esc();
                 else this.start();
                 return;
-            }
+            }*/
 
             // Swipe : axe dominant
             if (abs_dx > abs_dy) {
@@ -274,6 +277,7 @@ export class Game {
     #init_button() {
         document.getElementById("replay").addEventListener("click", () => this.reset());
         document.getElementById("music-player").addEventListener("click", () => this.switch_etat_musique());
+        document.getElementById("menupause").addEventListener("click", () => { if (!this.#en_pause){ this.#menue_pause = true; this.pause();} });
     }
 
 
@@ -291,11 +295,7 @@ export class Game {
         let nx =  x - 1
         if (x - 1 < 0) {
             if (this.#colision === true) {
-                this.#player.perdre_vie()
-                if (this.#player.est_mort()) {
-                    this.game_over();
-                    return;
-                }
+                this.perdre_vie()
             } nx = Game.nb_case - 1;
         }
         this.#player.deplacer_horde();
@@ -315,11 +315,7 @@ export class Game {
         let ny =  y - 1
         if (y - 1 < 0) {
             if (this.#colision === true) {
-                this.#player.perdre_vie()
-                if (this.#player.est_mort()) {
-                    this.game_over();
-                    return;
-                }
+                this.perdre_vie()
             } ny = Game.nb_case - 1;
         }
         this.#player.deplacer_horde();
@@ -338,11 +334,8 @@ export class Game {
         let nx =  x + 1
         if ( x + 1 >= Game.nb_case ) {
             if (this.#colision === true) {
-                this.#player.perdre_vie()
-                if (this.#player.est_mort()) {
-                    this.game_over();
-                    return;
-                }
+                this.perdre_vie()
+
             } nx = 0;
         }
         this.#player.deplacer_horde();
@@ -361,11 +354,7 @@ export class Game {
         let ny =  y + 1
         if ( y + 1 >= Game.nb_case ) {
             if (this.#colision === true) {
-                this.#player.perdre_vie()
-                if (this.#player.est_mort()) {
-                    this.game_over();
-                    return;
-                }
+                this.perdre_vie()
             } ny = 0;
 
         }
@@ -375,11 +364,7 @@ export class Game {
 
     update_x(x, y, nx){
         if(this.#colision === true && this.#matrice[nx][y] !== 0 && this.#matrice[nx][y].substring(0,4) === "zomb" ) {
-            this.#player.perdre_vie();
-            if (this.#player.est_mort()) {
-                this.game_over();
-                return;
-            }
+            this.perdre_vie()
         }
         this.#matrice[x][y] = 0;
         this.#matrice[nx][y] = 'zam';
@@ -389,11 +374,7 @@ export class Game {
     }
     update_y(x, y, ny) {
         if(this.#colision === true && this.#matrice[x][ny] !== 0 && this.#matrice[x][ny].substring(0,4) === "zomb" ) {
-            this.#player.perdre_vie();
-            if (this.#player.est_mort()) {
-                this.game_over();
-                return;
-            }
+            this.perdre_vie()
         }
         this.#matrice[x][y] = 0;
         this.#matrice[x][ny] = 'zam';
@@ -403,13 +384,22 @@ export class Game {
     }
 
     key_press_space() { this.switch_etat_musique(); }
-    key_press_esc() { if (!this.#en_pause) this.pause();}
+    key_press_esc() { if (!this.#en_pause) this.#menue_pause = true; this.pause();}
 
 
     //                    [ FONCTION UTILITAIRE ]                    \\
     get_case(x, y){ return document.getElementById(x+'-'+y); }
     afficher_matrice_console() { for (let ligne of this.#matrice) { console.log(ligne.join("\t")); } }
-
+    perdre_vie(){
+        this.#player.perdre_vie();
+        if (this.#player.est_mort()) {
+            this.game_over();
+            return;
+        } else {
+            this.#colision = false;
+            this.#id_vie_timeout = setTimeout(() => {this.#colision = true}, 3000)
+        }
+    }
 
     //                [ GESTION DE LA BOUCLE DE JEU ]                \\
     run() {
@@ -443,7 +433,6 @@ export class Game {
             }
         }
     }
-
     update_screen() {
         this.clear_z()
         this.zombies_dans_matrice();
@@ -469,6 +458,9 @@ export class Game {
     start() {
         if (!this.#game_over){
             this.#en_pause = false;
+            this.#menue_pause = false;
+            let menue_pause = document.getElementsByClassName("pause")[0];
+            if (!menue_pause.classList.contains("hide_manual")) menue_pause.classList.add("hide_manual")
             this.#intervalId  = setInterval(() => this.run(), Game.#vitesse * this.#bonus_vitesse );
             this.cacher_notice();
             if (this.#is_music) {
@@ -478,6 +470,10 @@ export class Game {
     }
     pause() {
         this.#en_pause = true
+        if (this.#menue_pause) {
+            let menue_pause = document.getElementsByClassName("pause")[0];
+            if (menue_pause.classList.contains("hide_manual")) menue_pause.classList.remove("hide_manual")
+        }
         clearInterval(this.#intervalId)
         this.#intervalId = null
         this.#last_mouv = null;
@@ -681,13 +677,13 @@ export class Game {
     // gestion étoile
     prendre_etoile(){
         Game.#sound_manager.play("etoile")
-        clearTimeout(this.#bonus_id); // annule le timeout de disparition
+        clearTimeout(this.#bonus_id);
         this.#bonus_actif = true;
         this.#bonus_position = null;
         this.#bonus_name = "";
         this.#bonus_id = null;
-        // Ne pas appeler clear_bonus() ici pour ne pas déclencher le reset_bonus timeout
         this.#colision = false;
+        this.#player.add_score(2);
         let board = document.getElementsByClassName('board')[0];
         if (!board.classList.contains('invincible')) board.classList.add('invincible');
         this.#id_etoile_timeout = setTimeout(() => {
