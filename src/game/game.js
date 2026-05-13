@@ -220,33 +220,48 @@ export class Game {
     #init_touch() {
         let touch_start_x = null;
         let touch_start_y = null;
-        const SEUIL = 30; // px minimum pour valider un swipe
+        let touch_start_time = null;
+        const SEUIL = 20;       // px minimum pour valider un swipe
+        const TAP_DUREE = 200;  // ms maximum pour un tap
 
-        const board = document.getElementById("board");
-
-        board.addEventListener('touchstart', (e) => {
-            touch_start_x = e.touches[0].clientX;
-            touch_start_y = e.touches[0].clientY;
+        // Sur document pour ne rater aucun touch, même si le board est partiellement couvert
+        document.addEventListener('touchstart', (e) => {
+            touch_start_x    = e.touches[0].clientX;
+            touch_start_y    = e.touches[0].clientY;
+            touch_start_time = Date.now();
         }, { passive: true });
 
-        board.addEventListener('touchend', (e) => {
+        document.addEventListener('touchmove', (e) => {
+            if (touch_start_x === null) return;
+            const dy = e.touches[0].clientY - touch_start_y;
+            const dx = e.touches[0].clientX - touch_start_x;
+            // Bloque le pull-to-refresh ET le scroll horizontal natif
+            if (Math.abs(dy) > 10 || Math.abs(dx) > 10) {
+                e.preventDefault();
+            }
+        }, { passive: false }); // passive: false obligatoire pour preventDefault
+
+        document.addEventListener('touchend', (e) => {
             if (touch_start_x === null) return;
 
-            const dx = e.changedTouches[0].clientX - touch_start_x;
-            const dy = e.changedTouches[0].clientY - touch_start_y;
+            const dx       = e.changedTouches[0].clientX - touch_start_x;
+            const dy       = e.changedTouches[0].clientY - touch_start_y;
+            const abs_dx   = Math.abs(dx);
+            const abs_dy   = Math.abs(dy);
+            const duree    = Date.now() - touch_start_time;
 
-            const abs_dx = Math.abs(dx);
-            const abs_dy = Math.abs(dy);
+            touch_start_x    = null;
+            touch_start_y    = null;
+            touch_start_time = null;
 
-            // Tap sans mouvement → pause / reprise musique (équivalent Escape)
-            if (abs_dx < SEUIL && abs_dy < SEUIL) {
+            // Tap court → pause/reprise
+            if (abs_dx < SEUIL && abs_dy < SEUIL && duree < TAP_DUREE) {
                 if (!this.#en_pause) this.key_press_esc();
-                touch_start_x = null;
-                touch_start_y = null;
+                else this.start();
                 return;
             }
 
-            // Swipe : on prend l'axe dominant
+            // Swipe : axe dominant
             if (abs_dx > abs_dy) {
                 if (dx > 0) this.key_press_right();
                 else        this.key_press_left();
@@ -254,8 +269,6 @@ export class Game {
                 if (dy > 0) this.key_press_down();
                 else        this.key_press_up();
             }
-            touch_start_x = null;
-            touch_start_y = null;
         }, { passive: true });
     }
     #init_button() {
