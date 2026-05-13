@@ -46,6 +46,7 @@ export class Player {
         let membre = []
         for (let i = 0; i < 3; i++) {
             let z = this.get_horde().pop();
+            this.#nb_zombies -= 1;
             if (!z.substring(0,4) === "zomb" && !z.substring(0,5) === "retro") {
                 var index = this.#liste_membre.indexOf(z);
                 membre.push(z);
@@ -60,7 +61,7 @@ export class Player {
         return this.#liste_membre;
     }
 
-    clear_horde() { this.#horde.clear(); this.#liste_membre = []; }
+    clear_horde() { this.#horde.clear(); this.#nb_zombies = 0; this.#liste_membre = []; }
     deplacer_horde(){
         if (this.#horde.get_suiv() != null) this.#horde.deplacer_horde()
     }
@@ -89,8 +90,5 @@ export class Player {
 
     is_membre_in_horde(membre) {
         return this.#liste_membre.includes(membre)
-    }
-    toString() {
-        return "zombies : " + this.#nb_zombies;
     }
 }
