@@ -754,7 +754,7 @@ export class Game {
     }
     // gestion retro
     prendre_retro(){
-        // Game.#sound_manager.play("");
+        Game.#sound_manager.play("retro");
         this.theme_retro_zam();
         this.#retro_est_apparut = true;
         this.#player.add_score(50);
