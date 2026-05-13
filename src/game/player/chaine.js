@@ -31,8 +31,8 @@ export class Chaine {
     deplacer_horde(){
         if(this.get_suiv() != null){
             if(this.get_suiv().get_suiv() != null) this.get_suiv().deplacer_horde();
-            let x = this.get_position()[0];
-            let y = this.get_position()[1];
+            const x = this.#position[0];
+            const y = this.#position[1];
             this.get_suiv().set_position(x, y);
         }
     }

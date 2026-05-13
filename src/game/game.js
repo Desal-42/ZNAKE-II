@@ -490,6 +490,7 @@ export class Game {
     }
     clear_bonus() {
         clearTimeout(this.#bonus_id);
+        clearTimeout(this.#id_reset_bonus);
         if (this.#bonus_position != null) this.#matrice[this.#bonus_position[0]][this.#bonus_position[1]] = 0;
         this.#bonus_position = null;
         this.#bonus_name = "";
@@ -625,10 +626,19 @@ export class Game {
     // gestion étoile
     prendre_etoile(){
         Game.#sound_manager.play("etoile")
+        clearTimeout(this.#bonus_id); // annule le timeout de disparition
+        this.#bonus_actif = true;
+        this.#bonus_position = null;
+        this.#bonus_name = "";
+        this.#bonus_id = null;
+        // Ne pas appeler clear_bonus() ici pour ne pas déclencher le reset_bonus timeout
         this.#colision = false;
         let board = document.getElementsByClassName('board')[0];
         if (!board.classList.contains('invincible')) board.classList.add('invincible');
-        this.#id_etoile_timeout = setTimeout(() => {this.#colision = true; this.etoile_remove()}, Game.#temps_effect_etoile)
+        this.#id_etoile_timeout = setTimeout(() => {
+            this.#colision = true;
+            this.etoile_remove();
+        }, Game.#temps_effect_etoile)
     }
     placement_etoile(){
         if (!this.#bonus_actif) {
