@@ -73,6 +73,8 @@ export class Game {
     static #temps_avant_disparition_nobru        = 10  * 1000;
     static #temps_avant_apparition_nobru         = 400 * 1000;
     static #temps_effect_nobru                   = 10  * 1000;
+    static #nb_click_kill                        = 5;
+    #nobru_click;
     #allow_nobru;
     // jekyll
     static #temps_avant_disparition_jekyll       = 10  * 1000;
@@ -191,6 +193,7 @@ export class Game {
 
         this.#est_pizza         = false;
         this.#mago_a_bouger     = 0;
+        this.#nobru_click       = 0;
     }
 
     //                      [ INITIALISATION ]                      \\
@@ -254,7 +257,10 @@ export class Game {
             if      (e.key === ' ')      this.key_press_space();
             if      (e.key === 'Escape') this.key_press_esc();
             if      (e.key === 'Enter') this.key_press_enter();
-
+            if      (e.key === 'Enter' && this.#freeze === true) this.kill_z();
+        });
+        document.addEventListener('click', () => {
+            if (this.#freeze === true) this.kill_z();
         });
     }
     #init_touch() {
@@ -294,13 +300,13 @@ export class Game {
             touch_start_y    = null;
             touch_start_time = null;
 
-            // Tap court → pause/reprise
-            /**
+            // Tap court → kill z
+
             if (abs_dx < SEUIL && abs_dy < SEUIL && duree < TAP_DUREE) {
-                if (!this.#en_pause) this.key_press_esc();
-                else this.start();
+                if (this.#freeze) this.kill_z();
+
                 return;
-            }*/
+            }
 
             // Swipe : axe dominant
             if (abs_dx > abs_dy) {
@@ -687,7 +693,9 @@ export class Game {
         }
         else if (bonus_val >= 85 && this.#player.get_score() > 149 && this.#allow_groupe) {
             // probabilité que le groupe sois choisi 15%
-            let groupe = Math.floor(Math.random() * 26);
+            //let groupe = Math.floor(Math.random() * 26);
+            let groupe = 17
+
             if (groupe > 12 ) {
                 this.#allow_groupe = false
                 this.#addTimer(() => {this.#allow_groupe = true}, Game.#temps_avant_apparition_groupe);
@@ -940,6 +948,9 @@ export class Game {
         this.#player.add_score(100);
         this.#allow_nobru = false;
         this.#freeze = true;
+        /****
+         implèmenter les clics
+         ****/
         // Timer séparé — ne pas réutiliser #bonus_id qui vient d'être nettoyé
         this.#addTimer(() => { this.#freeze = false; }, Game.#temps_effect_nobru);
     }
@@ -950,6 +961,16 @@ export class Game {
             this.#bonus_name = "nobru"
             this.#bonus_id = this.#addTimer(() => { this.nobru_remove(); }, Game.#temps_avant_disparition_nobru);
             this.#matrice[this.#bonus_position[0]][this.#bonus_position[1]] = "nobru";
+        }
+    }
+    kill_z() {
+        if (this.#nobru_click < Game.#nb_click_kill) {
+            this.#nobru_click += 1;
+        } else {
+            if (this.#player.get_horde().get_size() > 1 ) {
+                this.#nobru_click = 0;
+                this.#player.retirer_un_zombie();
+            }
         }
     }
     nobru_remove(){
