@@ -36,18 +36,33 @@ export class Chaine {
             this.get_suiv().set_position(x, y);
         }
     }
+    inverser_positions() {
+        // Collecte toutes les positions dans l'ordre
+        let positions = [];
+        let courant = this;
+        while (courant != null) {
+            positions.push([...courant.get_position()]); // ... servent ici à copier le tableau et pas la référence
+            courant = courant.get_suiv();
+        }
+        // Réaffecte en ordre inverse
+        positions.reverse();
+        courant = this;
+        for (let pos of positions) {
+            courant.set_position(pos[0], pos[1]);
+            courant = courant.get_suiv();
+        }
+    }
 
+    /** --- [ fonction chaine ] --- **/
     get_size() {  // return number
         let taille = 1
         if (this.#suivant != null) taille = taille + this.#suivant.get_size();
         return taille;
     }
-
     append(c) { // c : Chaine  return void
         if (this.#suivant != null) this.#suivant.append(c);
         else this.#suivant = c;
     }
-
     pop() {
         if (this.get_suiv() != null) {
             if (this.get_suiv().get_suiv() == null) {
@@ -57,7 +72,6 @@ export class Chaine {
             } else return this.#suivant.pop();
         }
     }
-
     clear() {
         this.#suivant = null;
     }

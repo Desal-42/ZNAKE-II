@@ -8,7 +8,6 @@ export class Player {
     #liste_img_z;
     #liste_membre;
 
-
     constructor(x, y){
         this.#horde = new Chaine("zam", x, y);
         this.#nb_zombies = 0;
@@ -39,9 +38,8 @@ export class Player {
         this.#liste_membre.push(classe);
     }
     ajouter_retro(){
-        this.#ajouter_chaine("retro");
+        this.#ajouter_chaine("retro_z");
     }
-
     retirer_trois_zombie() {
         let membre = []
         for (let i = 0; i < 3; i++) {
@@ -56,7 +54,6 @@ export class Player {
             }
         } return membre;
     }
-
     get_liste_membre() {
         return this.#liste_membre;
     }
@@ -65,6 +62,8 @@ export class Player {
     deplacer_horde(){
         if (this.#horde.get_suiv() != null) this.#horde.deplacer_horde()
     }
+
+    inverser_horde() { this.#horde.inverser_positions();}
 
     get_nb_zombies() { return this.#nb_zombies }
     get_horde() { return this.#horde; }

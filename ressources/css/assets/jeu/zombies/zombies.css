@@ -1,6 +1,6 @@
 .zombie_0, .zombie_1, .zombie_2, .zombie_3, .zombie_4, .zombie_5,
-.zombie_6, .zombie_7, .zombie_8, .zombie_9, .zombie_10, .zombie_11
-{background-color: rgba(128, 183, 54, 0.25);}
+.zombie_6, .zombie_7, .zombie_8, .zombie_9, .zombie_10, .zombie_11,
+.retro_z {background-color: rgba(128, 183, 54, 0.25);}
 
 .zombie_0  {background-image:url("../../../../media/zombies/f1.png");}
 
