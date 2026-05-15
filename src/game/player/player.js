@@ -17,10 +17,13 @@ export class Player {
         this.initialiser_z_liste();
     }
 
+    /** --- [ gestion de la vie ] --- **/
     gagner_vie() { this.#vie += 1; }
     perdre_vie() { this.#vie -= 1; }
     get_vie() {return this.#vie}
     est_mort() { return this.#vie < 0 }
+
+    /** --- [ gestion des zombies ] --- **/
     #ajouter_chaine(classe){
         const last_z = this.#horde.get_queue().get_position();
         let x = last_z[0];
@@ -57,22 +60,13 @@ export class Player {
             if ( z != null )  membre.push(z);
         } return membre;
     }
-    get_liste_membre() {
-        return this.#liste_membre;
-    }
-
     clear_horde() { this.#horde.clear(); this.#nb_zombies = 0; this.#liste_membre = []; }
     deplacer_horde(){
         if (this.#horde.get_suiv() != null) this.#horde.deplacer_horde()
     }
-
     inverser_horde() { this.#horde.inverser_positions();}
 
-    get_nb_zombies() { return this.#nb_zombies }
-    get_horde() { return this.#horde; }
-    get_score() { return this.#score; }
-    get_nb_memebre() { return this.#liste_membre.length }
-    add_score(points) { this.#score += points; }
+    /** --- [ gestion autre ] --- **/
     initialiser_z_liste() {
         this.#liste_img_z = [
             "zombie_0",
@@ -89,8 +83,17 @@ export class Player {
             "zombie_11"
         ];
     }
-
+    get_liste_membre() {
+        return this.#liste_membre;
+    }
     is_membre_in_horde(membre) {
         return this.#liste_membre.includes(membre)
     }
+    add_score(points) { this.#score += points; }
+
+    /** --- [ gestion des getters ] --- **/
+    get_nb_zombies() { return this.#nb_zombies }
+    get_horde() { return this.#horde; }
+    get_score() { return this.#score; }
+    get_nb_memebre() { return this.#liste_membre.length }
 }

@@ -4,7 +4,6 @@ export class Chaine {
     #mouv = null;
     #suivant; // Chaine
 
-
     constructor(tete, position_x, position_y){ // tete : string, position_x : number, position_y : number
         this.#tete = tete;
         this.#position = [position_x, position_y];
@@ -12,22 +11,19 @@ export class Chaine {
         this.#suivant = null;
     }
 
+    /** --- [ fonction getter ] --- **/
     get_mouv() { return this.#mouv; }
-    set_mouv(mouv) { this.#mouv = mouv; }
-
     get_tete() { return this.#tete } // return string
+    get_position() { return this.#position }
 
-    get_queue() {
-        if (this.#suivant != null) return this.#suivant.get_queue();
-        else return this;
-    }
-    get_suiv(){return this.#suivant;}
-
-    get_position() { return this.#position}
+    /** --- [ fonction setter ] --- **/
+    set_mouv(mouv) { this.#mouv = mouv; }
     set_position(x, y) {
         this.#position[0] = x;
         this.#position[1] = y;
     }
+
+    /** --- [ fonction propre à la horde ] --- **/
     deplacer_horde(){
         if(this.get_suiv() != null){
             if(this.get_suiv().get_suiv() != null) this.get_suiv().deplacer_horde();
@@ -54,6 +50,11 @@ export class Chaine {
     }
 
     /** --- [ fonction chaine ] --- **/
+    get_queue() {
+        if (this.#suivant != null) return this.#suivant.get_queue();
+        else return this;
+    }
+    get_suiv(){return this.#suivant;}
     get_size() {  // return number
         let taille = 1
         if (this.#suivant != null) taille = taille + this.#suivant.get_size();

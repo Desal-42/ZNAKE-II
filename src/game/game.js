@@ -8,30 +8,30 @@ export class Game {
     #colision; #matrice;
     #intervalId;
     #position_cerveau;
+    static #vitesse = 170; //170
+    static nb_case;
 
-    /** --- **[ variable menu ]** --- **/
+
+    /** ------------------ **[ variable menu ]** ------------------ **/
     #en_pause; #game_over; #menue_pause;
     #freeze;
 
-    /** --- **[ variable audio ]** --- **/
+
+    /** ----------------- **[ variable audio ]** ----------------- **/
     #is_music;
     static #music_manager = new Music_manager();
     static #sound_manager = new Sound_manager();
     static #sound_manager_deplacement = new Sound_manager();
 
 
-    static #vitesse = 170; //170
-    static nb_case;
-
-    /** --- **[ variable gestion bonus ]** --- **/
+    /** ------------- **[ variable gestion bonus ]** ------------- **/
     #bonus_actif; #bonus_position;
     #bonus_name; #bonus_id;
     #bonus_vitesse;
     static #temps_avant_nouveau_bonus            = 8 * 1000;
 
-    /** --- **[ variable bonus ]** --- **/
-
-        // bombe
+    /** ----------------- **[ variable bonus ]** ----------------- **/
+    // bombe
     static #temps_avant_disparition_bombe        = 10 * 1000;
     static #temps_avant_apparition_bombe         = 10 * 1000;
     #allow_bombe;
@@ -55,10 +55,9 @@ export class Game {
     #retro_est_apparut;
     #allow_retro;
 
-
-    /** -- **[ variable groupe ]** -- **/
+    /** ----------------- **[ variable groupe ]** ----------------- **/
     #allow_groupe;
-    static #temps_avant_apparition_groupe        = 10 * 1000
+    static #temps_avant_apparition_groupe        = 10  * 1000;
     // mago
     static #temps_avant_disparition_mago         = 10  * 1000;
     static #temps_avant_apparition_mago          = 400 * 1000;
@@ -88,34 +87,26 @@ export class Game {
     #allow_aspic;
     #est_pizza;
 
-    /** --- **[ système de timers piloté par le tick ]** --- **/
-        // Chaque entrée : { callback: Function, expires_at: number }
-        // expires_at est un timestamp absolu (Date.now() + délai).
-        // À la pause, on mémorise l'instant de mise en pause ; à la reprise on
-        // décale tous les expires_at du temps écoulé → les timers se figent
-        // pendant la pause sans aucun setTimeout/setInterval supplémentaire.
+
+    /** ------- **[ système de timers piloté par le tick ]** ------- **/
+    // Chaque entrée : { callback: Function, expires_at: number }
+    // expires_at est un timestamp absolu (Date.now() + délai).
+    // À la pause, on mémorise l'instant de mise en pause ;
+    // à la reprise on décale tous les expires_at du temps écoulé -> les timers se figent
+    // pendant la pause sans aucun setTimeout/setInterval supplémentaire.
     #timers = [];
     #paused_at = null;
-
-    /**
-     * Enregistre un timer géré par le tick de jeu.
-     * @param {Function} callback
-     * @param {number}   delay  — délai en ms
-     * @returns {object} handle (à passer à #clearTimer pour annuler)
-     */
     #addTimer(callback, delay) {
         const entry = { callback, expires_at: Date.now() + delay };
         this.#timers.push(entry);
         return entry;
     }
-
     /** Annule un timer avant qu'il ne fire. */
     #clearTimer(entry) {
         if (entry == null) return;
         const i = this.#timers.indexOf(entry);
         if (i !== -1) this.#timers.splice(i, 1);
     }
-
     /**
      * Appelé à chaque tick de run() : déclenche les timers expirés.
      * Les callbacks sont appelés après avoir retiré l'entrée de la liste
@@ -129,12 +120,8 @@ export class Game {
         this.#timers    = this.#timers.filter(t => now <  t.expires_at);
         for (const t of expired) t.callback();
     }
-
     /** Fige les timers : mémorise l'instant de pause. */
-    #pause_timers() {
-        this.#paused_at = Date.now();
-    }
-
+    #pause_timers() {this.#paused_at = Date.now();}
     /** Reprend les timers : décale tous les expires_at du temps passé en pause. */
     #resume_timers() {
         if (this.#paused_at !== null) {
@@ -143,7 +130,6 @@ export class Game {
             this.#paused_at = null;
         }
     }
-
     /** Vide tous les timers (reset / game over). */
     #clear_all_timers() {
         this.#timers    = [];
@@ -158,6 +144,7 @@ export class Game {
         this.placement_cerveau();
     }
 
+    //                     [ REINITIALISATION ]                     \\
     reset_parameter(){
         this.#last_mouv   = null;
         this.#en_pause    = true;
@@ -209,7 +196,7 @@ export class Game {
     #init_matrice() {
         let matrice = [];
         for (let i = 0; i < Game.nb_case; i++) {
-            matrice.push(new Array(Game.nb_case).fill(0)); // Remplace 0 par la valeur souhaitée
+            matrice.push(new Array(Game.nb_case).fill(0));
         }
         this.#matrice = matrice;
     }
@@ -217,13 +204,13 @@ export class Game {
         let width = window.innerWidth;
         let height = window.innerHeight;
 
-        if ( height < 800 && height >= 700) Game.nb_case  = 19;
+        if      ( height < 800 && height >= 700) Game.nb_case  = 19;
         else if ( height < 700 && height >= 600) Game.nb_case  = 17;
         else if ( height < 600 && height >= 500) Game.nb_case  = 15;
         else if ( height < 500 && height >= 400) Game.nb_case  = 13;
         else if ( height < 400 && height >= 300) Game.nb_case  = 11;
         else if ( height < 300 && height >= 200) Game.nb_case  = 9;
-        else if ( height < 200 && height >= 0) Game.nb_case  = 7;
+        else if ( height < 200 && height >= 0)   Game.nb_case  = 7;
         else Game.nb_case  = 21;
 
         document.getElementById("swiper").classList.add("swiper"+Game.nb_case);
@@ -254,9 +241,9 @@ export class Game {
             else if (e.key === 'q' || e.key === 'ArrowLeft' ) this.key_press_left();
             else if (e.key === 's' || e.key === 'ArrowDown' ) this.key_press_down();
             else if (e.key === 'd' || e.key === 'ArrowRight') this.key_press_right();
-            if      (e.key === ' ')      this.key_press_space();
-            if      (e.key === 'Escape') this.key_press_esc();
-            if      (e.key === 'Enter') this.key_press_enter();
+            if      (e.key === ' ')       this.key_press_space();
+            if      (e.key === 'Escape')  this.key_press_esc();
+            if      (e.key === 'Enter')   this.key_press_enter();
             if      (e.key === 'Enter' && this.#freeze === true) this.kill_z();
         });
         document.addEventListener('click', () => {
@@ -270,13 +257,11 @@ export class Game {
         const SEUIL = 20;       // px minimum pour valider un swipe
         const TAP_DUREE = 200;  // ms maximum pour un tap
 
-        // Sur document pour ne rater aucun touch, même si le board est partiellement couvert
         document.addEventListener('touchstart', (e) => {
             touch_start_x    = e.touches[0].clientX;
             touch_start_y    = e.touches[0].clientY;
             touch_start_time = Date.now();
         }, { passive: true });
-
         document.addEventListener('touchmove', (e) => {
             if (touch_start_x === null) return;
             const dy = e.touches[0].clientY - touch_start_y;
@@ -286,7 +271,6 @@ export class Game {
                 e.preventDefault();
             }
         }, { passive: false }); // passive: false obligatoire pour preventDefault
-
         document.addEventListener('touchend', (e) => {
             if (touch_start_x === null) return;
 
@@ -300,12 +284,9 @@ export class Game {
             touch_start_y    = null;
             touch_start_time = null;
 
-            // Tap court → kill z
-
+            // Tap court pour kill z
             if (abs_dx < SEUIL && abs_dy < SEUIL && duree < TAP_DUREE) {
-                if (this.#freeze) this.kill_z();
-
-                return;
+                if (this.#freeze) this.kill_z(); return;
             }
 
             // Swipe : axe dominant
@@ -341,18 +322,6 @@ export class Game {
             }
         }
     }
-    #up(){
-        this.#player.get_horde().set_mouv('z');
-        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
-        let nx =  x - 1
-        if (x - 1 < 0) {
-            if (this.#colision === true) {
-                this.perdre_vie()
-            } nx = Game.nb_case - 1;
-        }
-        this.#player.deplacer_horde();
-        this.update_x(x, y, nx)
-    }
     key_press_left(){
         if (this.#en_pause) {
             this.start();
@@ -367,18 +336,6 @@ export class Game {
                 this.#last_mouv = 'q';
             }
         }
-    }
-    #left(){
-        this.#player.get_horde().set_mouv('q');
-        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
-        let ny =  y - 1
-        if (y - 1 < 0) {
-            if (this.#colision === true) {
-                this.perdre_vie()
-            } ny = Game.nb_case - 1;
-        }
-        this.#player.deplacer_horde();
-        this.update_y(x, y, ny)
     }
     key_press_down(){
         if (this.#en_pause) {
@@ -395,18 +352,6 @@ export class Game {
             }
         }
     }
-    #down(){
-        this.#player.get_horde().set_mouv('s');
-        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
-        let nx =  x + 1
-        if ( x + 1 >= Game.nb_case ) {
-            if (this.#colision === true) {
-                this.perdre_vie()
-            } nx = 0;
-        }
-        this.#player.deplacer_horde();
-        this.update_x(x, y, nx)
-    }
     key_press_right(){
         if (this.#en_pause) {
             this.start();
@@ -421,6 +366,48 @@ export class Game {
                 this.#last_mouv = 'd';
             }
         }
+    }
+    key_press_space() { this.switch_etat_musique(); }
+    key_press_esc() { if (!this.#en_pause) this.#menue_pause = true; this.pause();}
+    key_press_enter() { if (!document.getElementById("game_over").classList.contains("hide_go_popin") && document.getElementById("save").classList.contains("hide")) {this.reset()}}
+
+
+    //                    [ GESTION DES MOUVEMENTS ]                    \\
+    #up(){
+        this.#player.get_horde().set_mouv('z');
+        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
+        let nx =  x - 1
+        if (x - 1 < 0) {
+            if (this.#colision === true) {
+                this.perdre_vie()
+            } nx = Game.nb_case - 1;
+        }
+        this.#player.deplacer_horde();
+        this.update_x(x, y, nx)
+    }
+    #left(){
+        this.#player.get_horde().set_mouv('q');
+        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
+        let ny =  y - 1
+        if (y - 1 < 0) {
+            if (this.#colision === true) {
+                this.perdre_vie()
+            } ny = Game.nb_case - 1;
+        }
+        this.#player.deplacer_horde();
+        this.update_y(x, y, ny)
+    }
+    #down(){
+        this.#player.get_horde().set_mouv('s');
+        let x = this.#player.get_horde().get_position()[0]; let y = this.#player.get_horde().get_position()[1];
+        let nx =  x + 1
+        if ( x + 1 >= Game.nb_case ) {
+            if (this.#colision === true) {
+                this.perdre_vie()
+            } nx = 0;
+        }
+        this.#player.deplacer_horde();
+        this.update_x(x, y, nx)
     }
     #right(){
         this.#player.get_horde().set_mouv('d');
@@ -465,30 +452,16 @@ export class Game {
         else if (this.#bonus_actif && this.#bonus_position != null && x === this.#bonus_position[0] && ny === this.#bonus_position[1]) this.prendre_bonus();
     }
 
-    key_press_space() { this.switch_etat_musique(); }
-    key_press_esc() { if (!this.#en_pause) this.#menue_pause = true; this.pause();}
-    key_press_enter() { if (!document.getElementById("game_over").classList.contains("hide_go_popin") && document.getElementById("save").classList.contains("hide")) {this.reset()}}
-
 
     //                    [ FONCTION UTILITAIRE ]                    \\
     get_case(x, y){ return document.getElementById(x+'-'+y); }
     afficher_matrice_console() { for (let ligne of this.#matrice) { console.log(ligne.join("\t")); } }
-    perdre_vie(){
-        this.#player.perdre_vie();
-        if (this.#player.est_mort()) {
-            this.game_over();
-            return;
-        } else {
-            this.#colision = false;
-            this.#addTimer(() => {this.#colision = true}, 3000);
-        }
-    }
+
 
     //                [ GESTION DE LA BOUCLE DE JEU ]                \\
     run() {
         // Tick des timers en premier : déclenche les callbacks expirés
         this.#tick_timers();
-
         switch (this.#last_mouv){
             case 'z' : if (this.#freeze === false) this.#up();    break;
             case 'q' : if (this.#freeze === false) this.#left();  break;
@@ -582,6 +555,12 @@ export class Game {
         }
     }
 
+    afficher_notice() {
+        if (document.getElementById("manual").classList.contains("hide_manual")) document.getElementById("manual").classList.remove("hide_manual");
+    }
+    cacher_notice() {
+        if (!document.getElementById("manual").classList.contains("hide_manual")) document.getElementById("manual").classList.add("hide_manual");
+    }
 
     //                    [ GESTION DE LA MUSIQUE ]                    \\
     switch_etat_musique() { if (this.#is_music) this.desactiver_musique(); else this.activer_musique()}
@@ -602,6 +581,16 @@ export class Game {
 
 
     //                     [ GESTION DU GAME OVER ]                     \\
+    perdre_vie(){
+        this.#player.perdre_vie();
+        if (this.#player.est_mort()) {
+            this.game_over();
+            return;
+        } else {
+            this.#colision = false;
+            this.#addTimer(() => {this.#colision = true}, 3000);
+        }
+    }
     game_over(){
         Game.#sound_manager.play('game_over');
         this.pause()
@@ -693,9 +682,7 @@ export class Game {
         }
         else if (bonus_val >= 85 && this.#player.get_score() > 149 && this.#allow_groupe) {
             // probabilité que le groupe sois choisi 15%
-            //let groupe = Math.floor(Math.random() * 26);
-            let groupe = 17
-
+            let groupe = Math.floor(Math.random() * 26);
             if (groupe > 12 ) {
                 this.#allow_groupe = false
                 this.#addTimer(() => {this.#allow_groupe = true}, Game.#temps_avant_apparition_groupe);
@@ -1082,13 +1069,5 @@ export class Game {
             document.documentElement.classList.remove("zam-ii");
             document.getElementById('title').innerHTML = "ZNAKE";
         }
-    }
-
-
-    afficher_notice() {
-        if (document.getElementById("manual").classList.contains("hide_manual")) document.getElementById("manual").classList.remove("hide_manual");
-    }
-    cacher_notice() {
-        if (!document.getElementById("manual").classList.contains("hide_manual")) document.getElementById("manual").classList.add("hide_manual");
     }
 }
