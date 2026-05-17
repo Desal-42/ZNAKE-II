@@ -1,7 +1,7 @@
 import {Game} from "./game/game.js";
+import {GamepadManager} from "./game/gamepad.js";
 
-const party = new Game();
-
+const gamepad = new GamepadManager(new Game())
 
 
 

@@ -51,13 +51,8 @@ export class Music_manager {
     play(){
         if (!this.#is_playing) {
             this.#audio.play()
-                .then(()=>{
-                    this.#is_playing = true;
-                    }
-                )
-                .catch(error => {
-                console.error("Erreur de lecture :", error);
-            });
+                .then(()=>{ this.#is_playing = true; } )
+                .catch(error => { console.error("Erreur de lecture :", error); });
         }
     }
     pause(){

@@ -13,7 +13,7 @@ export class Sound_manager{
         if (son in this.#sounds) {
             this.#audio.src = this.#sounds[son][0]
             this.#audio.volume = this.#sounds[son][1]
-            this.#audio.play();
+            this.#audio.play().catch(error => {});
         }
     }
     #init_sounds(){
@@ -27,7 +27,8 @@ export class Sound_manager{
             'tnt'       : ['./ressources/sons/tnt.mp3',          0.50],
             'vie'       : ['./ressources/sons/vie.mp3',          0.50],
             'game_over' : ['./ressources/sons/gameover.mp3',     0.50],
-            'retro'     : ['./ressources/sons/retro.mp3',        1],
+            'vie_perdu' : ['./ressources/sons/vie_perdu.mp3',    0.40],
+            'retro'     : ['./ressources/sons/retro.mp3',        1   ],
         }
     }
 }

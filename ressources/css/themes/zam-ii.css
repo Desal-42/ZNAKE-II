@@ -21,8 +21,8 @@
     --lost-min : rgba(143, 33, 0, 0.5);
 
     /** -------------------- menus -------------------- **/
-    --bonus-color:  #475059;
-    --bonus-actif-color:  #4a0a00 ;
+    --bonus-color:            #00a8cc; /** #475059;**/
+    --bonus-actif-color:      #CC0000; /** #4a0a00;**/
     --fond-menu-transparent : rgba(99, 15, 0, 0.95);
 
 }

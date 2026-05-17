@@ -50,145 +50,147 @@
     <script type="module" src="src/main.js"></script>
 </head>
 <body >
-    <header>
-        <div id="score" class="bloc33">
-            <p>SCORE <span class="score">0</span></p>
-            <p>HORDE <span class="nbhorde">0</span></p>
-        </div>
-        <div id="title" class="bloc33 title">ZNAKE</div>
-        <div class="bloc33">
-            <div class="zik"></div>
-        </div>
-        <div id="more" class="bloc33">
-            <div id="music_manager" class="music_manager">
-                <div id="music-player" class="music-player music-on"></div>
-            </div>
-            <p>VIE <span class="nbvie">0</span> </p>
-        </div>
-
-    </header>
-    <main class="global">
-        <div id="interaction"></div>
-        <div id="swiper">
-            <div id="board" class="board">
-
-            </div>
-        </div>
-        <div id="game_over" class="popin hide_go_popin">
-            <div class="popin_title">Game OverZ</div>
-            <div class="popin_description looser">
-                <ul>
-                    <li>Votre score est de : <span id="player_score"></span> points.</li>
-                    <li class="reach_top_five hide">Félicitations, vous avez atteint le top 5 des meilleurs joueurs ! Pour enregistrer votre score, saisissez votre pseudo ci-dessous et cliquez sur "Enregistrer"</li>
-                </ul>
-                <input id="player_pseudo" type="text" name="player_pseudo" class="reach_top_five hide">
-                <span class="error hide">Votre pseudo doit contenir uniquement des chiffres ou des lettres et faire moins de 10 caractères.</span>
-            </div>
-            <div class="popin_footer">
-                <span id="save" class="reach_top_five hide">Enregister</span>
-                <span id="replay">Rejouer</span>
-            </div>
-            <div class="top_five">
-                <div class="popin_title">Joueurs - Top 5</div>
-                <div class="popin_description">
-                    <ul id="score_list"></ul>
-                </div>
-            </div>
-        </div>
-        <div id="informations">
-            <div class="infos-titre">Informations</div>
-            <div class="infos-content">
-                <h5>Crédits</h5>
-                <ul class="credits">
-                    <li>ZNAKE II V0.2 [alpha] // Optimisé pour desktop</li>
-                    <li>Sur une reprise de Blockade et Snake</li>
-                    <li>Créé par MAGOYOND</li>
-                    <li>Développement ZNAKE II : <a href="https://www.linkedin.com/in/alexandre-deschanel/">Alexandre Deschanel</a></li>
-                    <li>Développement ZNAKE : Kevin H.</li>
-                    <li>Pixel art et intégration: Julien Escalas</li>
-                    <li>Illustrations: Bruno Guerzoni et Julien Escalas</li>
-                </ul>
-
-                <div class="infos-musique">
-                    <h5>Musique</h5>
-                    <p>Retrouvez également la bande originale du ZNAKE en écoute sur le <a target="_blank" href="https://soundcloud.com/magoyond">Soundcloud du groupe</a> et en téléchargement légal sur <a target="_blank" href="http://www.magoyond.com/boutique">le site de MAGOYOND</a></p>
-                    <ul>
-                        <li>Composé, produit et réalisé par MAGOYOND</li>
-                        <li>Adaptation, son, mixage et mastering: Aspic</li>
-                    </ul>
-                    <a target="_blank" href="http://www.magoyond.com/boutique">
-                        <img src="./ressources/images/ZnakeTheGameSmall.png" title="Bande Originale The Znake - MAGOYOND" alt="Bande Originale The Znake - MAGOYOND">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div id="manual" class="manual">
-            <h5>Notize</h5>
-            <ul class="m-desktop">
-                <li>Déplacement avec les <span>touches fléchées</span>.</li>
-                <br>
-                <li><span>Echap</span> pour mettre en pause,<br><br><span>Touches fléchées</span> pour reprendre</li>
-                <br>
-                <li><span>Barre espace</span> pour arreter/reprendre la musique</li>
-                <br>
-                <li class="blink">Choisissez une direction pour commencer !</li>
-            </ul>
-            <ul class="m-mobile hide">
-                <li><span>Attention</span>, ce jeu n'est pas pleinement optimisé pour mobile (pour le moment) !</li>
-                <li>Déplacement en swippant <span> l'écran tactile</span></li>
-                <li><span>Pause</span> en bas de l'écran</li>
-                <li class="blink">Choisissez une direction pour commencer !</li>
-            </ul>
-        </div>
-        <div class="pause hide_manual">
-            <h5>PAUZE</h5>
-            <div class="score-pause">
-                <p>Score : <span class="score">0</span> - <span class="nbhorde">0</span> zombies dans la horde</p>
-            </div>
-
-            <p class="blink">Choisissez une direction pour relancer la partie !</p>
-
-            <div class="wrapper">
-
-                <div class="bloc50">
-                    <ul class="item-list">
-                        <li class="cerveau"><span>Cerveau</span> Bouffe zombiesque - 10pts</li>
-                        <li class="zombietest"><span>Zombie</span> 1 cerveau = 1 zombie dans la horde</li>
-                        <li class="etoile"><span>Étoile</span> Invincibilité - 2pts</li>
-                        <li class="bombe"><span>Bombe</span> Décharge la horde de 3 zombies - 5pts</li>
-                        <li class="tntboum"><span>TNT</span> Décharge la horde de tous les zombies - 50pts</li>
-                        <li class="life"><span>Vie</span> Résiste à un choc sans mourir - 20pts</li>
-                    </ul>
-                </div>
-
-                <div class="bloc50">
-                    <ul class="item-list">
-                        <li class="lemago"><span>Le Mago</span> Tente d'attraper le fou - 150pts</li>
-                        <li class="levito"><span>Vito</span> La Horde accélère - 100pts</li>
-                        <li class="lenobru"><span>Nobru</span> Clique sur la horde pour tuer les zombies - 100pts</li>
-                        <li class="lejekyll"><span>Jekyll</span> La horde se coupe/change de sens - 200pts</li>
-                        <li class="leaspic"><span>Aspic</span> Fait apparaitre des pizzas - 80pts</li>
-                        <li class="pizz"><span>Pizza</span> Miam ! Ne charge pas votre horde - 15pts</li>
-                    </ul>
-                </div>
-                <div class="spacer"></div>
-
-                <ul class="notice-pause">
-                    <li>Chaque membres du groupe présents dans votre horde vous rapportera <span>5 points supplémentaires</span> par cerveaux attrapés</li>
-                </ul>
-
-            </div>
-        </div>
-
-    </main>
-    <footer>
-        <div class="time_left"></div>
-        <div id="bonus_description" class="descmobile hide">
-            <div class="description"></div>
-        </div>
-        <div id="menupause"></div>
-    </footer>
-    <div class="soundplayer">
+<header>
+    <div id="score" class="bloc33">
+        <p>SCORE <span class="score">0</span></p>
+        <p>HORDE <span class="nbhorde">0</span></p>
     </div>
+    <div id="title" class="bloc33 title">ZNAKE</div>
+    <div class="bloc33">
+        <div class="zik"></div>
+    </div>
+    <div id="more" class="bloc33">
+        <div id="music_manager" class="music_manager">
+            <div id="music-player" class="music-player music-on"></div>
+        </div>
+        <p>VIE <span class="nbvie">0</span> </p>
+    </div>
+
+</header>
+<main class="global">
+    <div id="interaction"></div>
+    <div id="swiper">
+        <div id="board" class="board">
+
+        </div>
+    </div>
+    <div id="game_over" class="popin hide_go_popin">
+        <div class="popin_title">Game OverZ</div>
+        <div class="popin_description looser">
+            <ul>
+                <li>Votre score est de : <span id="player_score"></span> points.</li>
+                <li class="reach_top_five hide">Félicitations, vous avez atteint le top 5 des meilleurs joueurs ! Pour enregistrer votre score, saisissez votre pseudo ci-dessous et cliquez sur "Enregistrer"</li>
+            </ul>
+            <input id="player_pseudo" type="text" name="player_pseudo" class="reach_top_five hide">
+            <span class="error hide">Votre pseudo doit contenir uniquement des chiffres ou des lettres et faire moins de 10 caractères.</span>
+        </div>
+        <div class="popin_footer">
+            <span id="save" class="reach_top_five hide">Enregister</span>
+            <span id="replay">Rejouer</span>
+        </div>
+        <div class="top_five">
+            <div class="popin_title">Joueurs - Top 5</div>
+            <div class="popin_description">
+                <ul id="score_list"></ul>
+            </div>
+        </div>
+    </div>
+    <div id="informations">
+        <div class="infos-titre">Informations</div>
+        <div class="infos-content">
+            <h5>Crédits</h5>
+            <ul class="credits">
+                <li>ZNAKE II V0.3 [alpha]</li>
+                <li>Sur une reprise de Blockade et Snake</li>
+                <li>Créé par MAGOYOND</li>
+                <li>Développement ZNAKE II : <a href="https://www.linkedin.com/in/alexandre-deschanel/">Alexandre Deschanel</a></li>
+                <li>Développement ZNAKE : Kevin H.</li>
+                <li>Pixel art et intégration: Julien Escalas</li>
+                <li>Illustrations: Bruno Guerzoni et Julien Escalas</li>
+            </ul>
+
+            <div class="infos-musique">
+                <h5>Musique</h5>
+                <p>Retrouvez également la bande originale du ZNAKE en écoute sur le <a target="_blank" href="https://soundcloud.com/magoyond">Soundcloud du groupe</a> et en téléchargement légal sur <a target="_blank" href="http://www.magoyond.com/boutique">le site de MAGOYOND</a></p>
+                <ul>
+                    <li>Composé, produit et réalisé par MAGOYOND</li>
+                    <li>Adaptation, son, mixage et mastering: Aspic</li>
+                </ul>
+                <a target="_blank" href="http://www.magoyond.com/boutique">
+                    <img src="./ressources/images/ZnakeTheGameSmall.png" title="Bande Originale The Znake - MAGOYOND" alt="Bande Originale The Znake - MAGOYOND">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="manual" class="manual">
+        <h5>Notize</h5>
+        <ul class="m-desktop">
+            <li>Déplacement avec les <span>touches fléchées</span>.</li>
+            <br>
+            <li><span>Echap</span> pour mettre en pause,<br><br><span>Touches fléchées</span> pour reprendre</li>
+            <br>
+            <li><span>Barre espace</span> pour arreter/reprendre la musique</li>
+            <br>
+            <li class="blink">Choisissez une direction pour commencer !</li>
+        </ul>
+        <ul class="m-mobile hide">
+            <li><span>Attention</span>, ce jeu n'est pas pleinement optimisé pour mobile (pour le moment) !</li>
+            <li>Déplacement en swippant <span> l'écran tactile</span></li>
+            <li><span>Pause</span> en bas de l'écran</li>
+            <li class="blink">Choisissez une direction pour commencer !</li>
+        </ul>
+    </div>
+    <div class="pause hide_manual">
+        <h5>PAUZE</h5>
+        <div class="score-pause">
+            <p>Score : <span class="score">0</span> - <span class="nbhorde">0</span> zombies dans la horde</p>
+        </div>
+
+        <p class="blink">Choisissez une direction pour relancer la partie !</p>
+
+        <div class="wrapper">
+
+            <div class="bloc50">
+                <ul class="item-list">
+                    <li class="cerveau"><span>Cerveau</span> Bouffe zombiesque - 10pts</li>
+                    <li class="zombietest"><span>Zombie</span> 1 cerveau = 1 zombie dans la horde</li>
+                    <li class="etoile"><span>Étoile</span> Invincibilité - 2pts</li>
+                    <li class="bombe"><span>Bombe</span> Décharge la horde de 3 zombies - 5pts</li>
+                    <li class="tntboum"><span>TNT</span> Décharge la horde de tous les zombies - 50pts</li>
+                    <li class="life"><span>Vie</span> Résiste à un choc sans mourir - 20pts</li>
+                </ul>
+            </div>
+
+            <div class="bloc50">
+                <ul class="item-list">
+                    <li class="lemago"><span>Le Mago</span> Tente d'attraper le fou - 150pts</li>
+                    <li class="levito"><span>Vito</span> La Horde accélère - 100pts</li>
+                    <li class="lenobru"><span>Nobru</span> Clique sur la horde pour tuer les zombies - 100pts</li>
+                    <li class="lejekyll"><span>Jekyll</span> La horde se coupe/change de sens - 200pts</li>
+                    <li class="leaspic"><span>Aspic</span> Fait apparaitre des pizzas - 80pts</li>
+                    <li class="pizz"><span>Pizza</span> Miam ! Ne charge pas votre horde - 15pts</li>
+                </ul>
+            </div>
+            <div class="spacer"></div>
+
+            <ul class="notice-pause">
+                <li>Chaque membres du groupe présents dans votre horde vous rapportera <span>5 points supplémentaires</span> par cerveaux attrapés</li>
+            </ul>
+
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="time_left"></div>
+    <div class="time_left_actif"></div>
+    <div id="bonus_description" class="descmobile hide">
+        <div class="description"></div>
+    </div>
+    <div id="menupause"></div>
+</footer>
+<div class="soundplayer">
+</div>
+<!-- Preload retro theme resources -->
+<div class="retro-zam" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;" aria-hidden="true"></div>
 </body>
 </html>

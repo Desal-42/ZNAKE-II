@@ -46,12 +46,11 @@ export class Player {
     retirer_un_zombie() {
         let z = this.get_horde().pop();
         this.#nb_zombies -= 1;
-        if (!z.substring(0,4) === "zomb" && !z.substring(0,5) === "retro") {
+        if (z.substring(0,4) !== "zomb") {
             var index = this.#liste_membre.indexOf(z);
             if (index !== -1) this.#liste_membre.splice(index, 1);
             return z;
-        }
-        return null;
+        } return null;
     }
     retirer_trois_zombie() {
         let membre = []

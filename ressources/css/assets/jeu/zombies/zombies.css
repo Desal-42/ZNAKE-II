@@ -2,7 +2,7 @@
 .zombie_6, .zombie_7, .zombie_8, .zombie_9, .zombie_10, .zombie_11,
 .retro_z {background-color: rgba(128, 183, 54, 0.25);}
 
-.zombie_0  {background-image:url("../../../../media/zombies/f1.png");}
+.zombie_0, .zombietest {background-image:url("../../../../media/zombies/f1.png");}
 
 .zombie_1  {background-image:url("../../../../media/zombies/h1.png");}
 
