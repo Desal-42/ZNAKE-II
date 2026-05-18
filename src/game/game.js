@@ -23,7 +23,7 @@ export class Game {
 
     /** ------------------ **[ variable cookies ]** ------------------ **/
     static #cookie_manager = new Cookies();
-    #is_cookies;
+    #is_cookies; #cookie_select;
 
     /** ------------------ **[ variable menu ]** ------------------ **/
     #en_pause; #game_over; #menue_pause;
@@ -158,6 +158,7 @@ export class Game {
             document.getElementById("cookie").classList.remove("hide");
             this.#is_music = true;
             this.#is_sound = true;
+            this.#cookie_select = true;
         } else {
             if (Game.#cookie_manager.get_cookie("is_cookies") === "false"){
                 this.setup_sans_cookie();
@@ -269,14 +270,16 @@ export class Game {
     }
     #init_key () {
         document.addEventListener('keydown', (e) => {
-            if      (e.key === 'z' || e.key === 'ArrowUp'   ) this.key_press_up();
-            else if (e.key === 'q' || e.key === 'ArrowLeft' ) this.key_press_left();
-            else if (e.key === 's' || e.key === 'ArrowDown' ) this.key_press_down();
-            else if (e.key === 'd' || e.key === 'ArrowRight') this.key_press_right();
-            if      (e.key === ' ')       this.key_press_space();
-            if      (e.key === 'Escape')  this.key_press_esc();
-            if      (e.key === 'Enter')   this.key_press_enter();
-            if      (e.key === 'Enter' && this.#freeze === true) this.kill_z();
+            if (this.#cookie_select !== true) {
+                if      (e.key === 'z' || e.key === 'ArrowUp'   ) this.key_press_up();
+                else if (e.key === 'q' || e.key === 'ArrowLeft' ) this.key_press_left();
+                else if (e.key === 's' || e.key === 'ArrowDown' ) this.key_press_down();
+                else if (e.key === 'd' || e.key === 'ArrowRight') this.key_press_right();
+                if      (e.key === ' ')       this.key_press_space();
+                if      (e.key === 'Escape')  this.key_press_esc();
+                if      (e.key === 'Enter')   this.key_press_enter();
+                if      (e.key === 'Enter' && this.#freeze === true) this.kill_z();
+            }
         });
         document.addEventListener('click', () => {
             if (this.#freeze === true) this.kill_z();
@@ -345,12 +348,13 @@ export class Game {
         Game.#cookie_manager.set_cookie("is_sound", 30, true);
         Game.#cookie_manager.set_cookie("is_music", 30, true);
         this.setup_cookie()
-
+        this.#cookie_select = false;
     }
     refuser_cookies(){
         document.getElementById("cookie").classList.add("hide")
         Game.#cookie_manager.set_cookie("is_cookies", 365, false)
         this.setup_sans_cookie()
+        this.#cookie_select = false;
     }
 
     setup_cookie(){
