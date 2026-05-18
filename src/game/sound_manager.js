@@ -26,7 +26,7 @@ export class Sound_manager{
             'pizza'     : ['./ressources/sons/pizza.mp3',        0.50],
             'tnt'       : ['./ressources/sons/tnt.mp3',          0.50],
             'vie'       : ['./ressources/sons/vie.mp3',          0.50],
-            'game_over' : ['./ressources/sons/gameover.mp3',     0.50],
+            'game_over' : ['./ressources/sons/gameover.mp3',     0.25],
             'vie_perdu' : ['./ressources/sons/vie_perdu.mp3',    0.40],
             'retro'     : ['./ressources/sons/retro.mp3',        1   ],
         }
