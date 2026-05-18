@@ -1,6 +1,7 @@
 import {Player} from "./player/player.js";
 import {Music_manager} from "./music_manager.js"
 import {Sound_manager} from  "./sound_manager.js"
+import {Cookies} from "../cookies/cookies.js";
 
 export class Game {
     /** --- **[ variable de jeu ]** --- **/
@@ -20,13 +21,17 @@ export class Game {
     #tla_total_ms = null;
     #grace_timer = null;
 
+    /** ------------------ **[ variable cookies ]** ------------------ **/
+    static #cookie_manager = new Cookies();
+    #is_cookies;
+
     /** ------------------ **[ variable menu ]** ------------------ **/
     #en_pause; #game_over; #menue_pause;
     #freeze;
 
 
     /** ----------------- **[ variable audio ]** ----------------- **/
-    #is_music;
+    #is_music; #is_sound;
     static #music_manager = new Music_manager();
     static #sound_manager = new Sound_manager();
     static #sound_manager_deplacement = new Sound_manager();
@@ -149,7 +154,19 @@ export class Game {
 
     constructor(){
         this.init();
-        this.#is_music = true;
+        if (Game.#cookie_manager.get_cookie("is_cookies") === null) {
+            document.getElementById("cookie").classList.remove("hide");
+            this.#is_music = true;
+            this.#is_sound = true;
+        } else {
+            if (Game.#cookie_manager.get_cookie("is_cookies") === "false"){
+                this.setup_sans_cookie();
+                console.log("pas cookie")
+            } else {
+                console.log("cookie")
+                this.setup_cookie();
+            }
+        }
         this.reset_parameter();
         this.placement_cerveau();
     }
@@ -315,9 +332,48 @@ export class Game {
         }, { passive: true });
     }
     #init_button() {
-        document.getElementById("replay").addEventListener("click", () => this.reset());
+        document.getElementById("replay").addEventListener(      "click", () => this.reset());
         document.getElementById("music-player").addEventListener("click", () => this.switch_etat_musique());
-        document.getElementById("menupause").addEventListener("click", () => { if (!this.#en_pause){ this.#menue_pause = true; this.pause();} });
+        document.getElementById("menupause").addEventListener(   "click", () => { if (!this.#en_pause){ this.#menue_pause = true; this.pause();} });
+        document.getElementById("cookie-ok").addEventListener(   "click", () => { this.accepter_cookies() });
+        document.getElementById("cookie-non").addEventListener(  "click", () => { this.refuser_cookies() });
+    }
+    //                    [ GESTION DES COOKIES ]                    \\
+    accepter_cookies(){
+        document.getElementById("cookie").classList.add("hide");
+        Game.#cookie_manager.set_cookie("is_cookies", 30, true);
+        Game.#cookie_manager.set_cookie("is_sound", 30, true);
+        Game.#cookie_manager.set_cookie("is_music", 30, true);
+        this.setup_cookie()
+
+    }
+    refuser_cookies(){
+        document.getElementById("cookie").classList.add("hide")
+        Game.#cookie_manager.set_cookie("is_cookies", 365, false)
+        this.setup_sans_cookie()
+    }
+
+    setup_cookie(){
+        this.#is_cookies = true;
+        console.log("sound = " + Game.#cookie_manager.get_cookie("is_sound"))
+        if (Game.#cookie_manager.get_cookie("is_sound") === "true") this.#is_sound = true;
+        else this.#is_sound = false;
+        let m = document.getElementById("music-player")
+        if (Game.#cookie_manager.get_cookie("is_music") === "true") {
+            this.#is_music = true;
+            m.classList.remove("music-off");
+            m.classList.add("music-on")
+        } else {
+            this.#is_music = false;
+            m.classList.add("music-off");
+            m.classList.remove("music-on")
+        }
+    }
+
+    setup_sans_cookie() {
+        this.#is_cookies = false
+        this.#is_music = true;
+        this.#is_sound = true;
     }
 
 
@@ -331,7 +387,7 @@ export class Game {
             }
         }
         else {
-            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if (!this.#game_over) { if (this.#is_sound === true)  Game.#sound_manager_deplacement.play('mouvement');}
             if ((this.#player.get_horde().get_mouv() !== 's' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'z') {
                 this.#last_mouv = 'z';
             }
@@ -346,7 +402,7 @@ export class Game {
             }
         }
         else {
-            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if (!this.#game_over) { if (this.#is_sound === true) Game.#sound_manager_deplacement.play('mouvement');}
             if ((this.#player.get_horde().get_mouv() !== 'd' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'q') {
                 this.#last_mouv = 'q';
             }
@@ -361,7 +417,7 @@ export class Game {
             }
         }
         else {
-            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if (!this.#game_over) { if (this.#is_sound === true) Game.#sound_manager_deplacement.play('mouvement');}
             if ((this.#player.get_horde().get_mouv() !== 'z' || this.#player.get_nb_zombies() < 1 )  && this.#last_mouv !== 's') {
                 this.#last_mouv = 's';
             }
@@ -376,7 +432,7 @@ export class Game {
             }
         }
         else {
-            if (!this.#game_over) {Game.#sound_manager_deplacement.play('mouvement');}
+            if (!this.#game_over) { if (this.#is_sound === true) Game.#sound_manager_deplacement.play('mouvement');}
             if ((this.#player.get_horde().get_mouv() !== 'q' || this.#player.get_nb_zombies() < 1 ) && this.#last_mouv !== 'd' ) {
                 this.#last_mouv = 'd';
             }
@@ -686,6 +742,8 @@ export class Game {
     switch_etat_musique() { if (this.#is_music) this.desactiver_musique(); else this.activer_musique() }
     activer_musique() {
         this.#is_music = true;
+        if (this.#is_cookies) Game.#cookie_manager.update_cookie("is_music", true)
+
         if (!this.#en_pause) (Game.#music_manager.play());
         let m = document.getElementById("music-player")
         m.classList.remove("music-off");
@@ -693,6 +751,7 @@ export class Game {
     }
     desactiver_musique() {
         this.#is_music = false;
+        if (this.#is_cookies) Game.#cookie_manager.update_cookie("is_music", false)
         Game.#music_manager.pause()
         let m = document.getElementById("music-player")
         m.classList.add("music-off");
@@ -707,7 +766,7 @@ export class Game {
             this.game_over();
             return;
         } else {
-            Game.#sound_manager.play('vie_perdu')
+            if (this.#is_sound === true) Game.#sound_manager.play('vie_perdu')
             this.#colision = false;
             this.#clearTimer(this.#grace_timer);
             this.#grace_timer = this.#addTimer(() => {
@@ -717,7 +776,7 @@ export class Game {
         }
     }
     game_over() {
-        Game.#sound_manager.play('game_over');
+        if (this.#is_sound === true) Game.#sound_manager.play('game_over');
         this.pause()
         this.#game_over = true;
         document.getElementById("player_score").innerHTML = this.#player.get_score();
@@ -832,7 +891,7 @@ export class Game {
 
     // gestion bombe (retire trois zombies quand prise)
     prendre_bombe(){
-        Game.#sound_manager.play("bombe");
+        if (this.#is_sound === true) Game.#sound_manager.play("bombe");
         this.#stop_time_left();
         const membres_avant = [...this.#player.get_liste_membre()];
         let liste = this.#player.retirer_trois_zombie();
@@ -870,7 +929,7 @@ export class Game {
     }
     // gestion tnt (retire tous les zombies de la horde)
     prendre_tnt(){
-        Game.#sound_manager.play("tnt");
+        if (this.#is_sound === true) Game.#sound_manager.play("tnt");
         const membres_en_horde = [...this.#player.get_liste_membre()];
         for (let x = 0; x < Game.nb_case; x++) {
             for (let y = 0; y < Game.nb_case; y++) {
@@ -905,7 +964,7 @@ export class Game {
     }
     // gestion cœur (ajoute une vie)
     prendre_coeur(){
-        Game.#sound_manager.play("vie");
+        if (this.#is_sound === true) Game.#sound_manager.play("vie");
         this.#player.gagner_vie();
         //this.#coeur_est_apparut = true;
         this.#player.add_score(20);
@@ -931,7 +990,7 @@ export class Game {
     // gestion étoile (rend invincible sur un temps)
     prendre_etoile(){
         this.#start_time_left_actif(Game.#temps_effect_etoile);
-        Game.#sound_manager.play("etoile")
+        if (this.#is_sound === true) Game.#sound_manager.play("etoile")
         this.#clearTimer(this.#grace_timer);
         this.#grace_timer = null;
         this.clear_before_effect()
@@ -963,7 +1022,7 @@ export class Game {
     }
     // gestion retro (change le thème temps qu’il est dans la horde)
     prendre_retro(){
-        Game.#sound_manager.play("retro");
+        if (this.#is_sound === true) Game.#sound_manager.play("retro");
         this.#retro_est_apparut = true;
         this.theme_retro_zam();
         this.#player.add_score(50);
@@ -1000,7 +1059,7 @@ export class Game {
     }
     // gestion mago (fuis loins de Zam)
     prendre_mago(){
-        Game.#sound_manager.play("membre");
+        if (this.#is_sound === true) Game.#sound_manager.play("membre");
         this.clear_bonus();
         this.#player.ajouter_un_membre('mago');
         this.#allow_mago = false;
@@ -1061,7 +1120,7 @@ export class Game {
     // gestion vito (augmente la vitesse de déplacement de la horde sur une période donnée)
     prendre_vito(){
         this.#start_time_left_actif(Game.#temps_effect_vito);
-        Game.#sound_manager.play("membre");
+        if (this.#is_sound === true) Game.#sound_manager.play("membre");
         this.#player.ajouter_un_membre('vito');
         this.clear_bonus();
         this.#player.add_score(100);
@@ -1101,7 +1160,7 @@ export class Game {
         this.#allow_nobru = false;
         this.#freeze = true;
         this.#addTimer(() => {
-            Game.#sound_manager.play("membre");
+            if (this.#is_sound === true) Game.#sound_manager.play("membre");
             this.#player.ajouter_un_membre('nobru');
             this.#player.add_score(100);
             this.#stop_time_left_actif();
@@ -1137,7 +1196,7 @@ export class Game {
     // gestion aspic (transforme les cerveaux en pizza sur un temps donnés)
     prendre_aspic(){
         this.#start_time_left_actif(Game.#temps_effect_aspic);
-        Game.#sound_manager.play("membre");
+        if (this.#is_sound === true) Game.#sound_manager.play("membre");
         this.clear_before_effect();
         this.#player.add_score(80);
         this.#player.ajouter_un_membre('aspic');
@@ -1171,7 +1230,7 @@ export class Game {
     // gestion jekyll (change de sens la horde sur un temps donnés)
     prendre_jekyll(){
         this.#start_time_left_actif(Game.#temps_effect_jekyll);
-        Game.#sound_manager.play("membre");
+        if (this.#is_sound === true) Game.#sound_manager.play("membre");
         this.#player.ajouter_un_membre('jekyll');
         this.clear_before_effect();
         this.#player.add_score(200);
@@ -1211,11 +1270,11 @@ export class Game {
     manger_cerveau() {
         if (this.#est_pizza === false){
             this.update_score(10 + (5 * this.#player.get_nb_memebre()));
-            Game.#sound_manager.play("cerveau")
+            if (this.#is_sound === true) Game.#sound_manager.play("cerveau")
             this.#player.ajouter_un_zombie();
         } else {
             this.update_score(15);
-            Game.#sound_manager.play("pizza")
+            if (this.#is_sound === true) Game.#sound_manager.play("pizza")
         }
         this.#position_cerveau = null;
     }

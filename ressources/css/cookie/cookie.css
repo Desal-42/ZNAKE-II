@@ -1,0 +1,59 @@
+.cookie {
+    display: block;
+    position: absolute; top: 0;
+    margin: 25vh 15vw;
+    width: 70vw;
+    height: 50vh;
+    background-color: var(--black75);
+    color: var(--wihte);
+    padding: 25px;
+    border: var(--highlight) solid 5px;
+    overflow-y: scroll;
+}
+.cookie h4 {
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+.cookie p {
+    margin-bottom: 20px;
+}
+.cookie > div {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: medium;
+}
+.cookie > div > div {
+    padding: 10px 20px;
+    margin: auto;
+}
+.cookie > div > div:hover {
+    padding: 5px 5px;
+    font-size: calc(1rem + 5px);
+    color : var(--highlight);
+}
+
+@media screen and (orientation: portrait) and (any-pointer: coarse), screen and (orientation: portrait) and (any-pointer: fine) {
+    .cookie {
+        margin: 10vh 5vw;
+        width: 90vw;
+        height: 80vh;
+        background-color: var(--black75);
+        color: var(--wihte);
+        padding: 25px;
+        border: var(--highlight) solid 5px;
+        overflow-y: scroll;
+    }
+    .cookie > div {
+        padding: 5px;
+    }
+    .cookie > div > div {
+        padding: 5px 0;
+
+    }
+    .cookie > div > div:hover {
+        padding: 2.5px;
+        font-size: calc(1rem + 0.5px);
+    }
+}
